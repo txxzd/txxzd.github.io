@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timothy ZD | Terminal Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="#" class="brand" data-view="home">
+        <span class="brand__dot"></span>
+        <span>timothyzd.dev</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav" aria-label="Primary">
+        <a href="#" class="nav__link active" data-view="home">Home</a>
+        <a href="#experience" class="nav__link" data-view="experience">Experience</a>
+        <a href="#projects" class="nav__link" data-view="projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HOME VIEW: about me + terminal branding -->
+      <section class="view view--active" id="view-home">
+        <div class="view__inner">
+          <div class="terminal-card hero__panel">
+            <div class="terminal-bar">
+              <span class="terminal-light"></span>
+              <span class="terminal-light"></span>
+              <span class="terminal-light"></span>
+            </div>
+            <div class="terminal-body">
+              <p class="hero__eyebrow">&gt; WELCOME</p>
+              <h1 class="hero__title">Timothy ZD</h1>
+              <p class="hero__lead">I build clean web experiences, automate workflows, and ship polished product demos.</p>
+              <div class="hero__prompt">
+                <span>~/portfolio $</span>
+                <span class="cursor">_</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-content">
+            <p>Hi — I'm Timothy, a fresh graduate from the Singapore Institute of Technology with a BSc (Hons) in Applied Artificial Intelligence. I have a strong interest in machine learning and AI agents — from training models that solve real problems to designing agentic workflows that automate real-world tasks. I'm always looking for ways to push what's possible with AI and ship things that work.</p>
+            <div class="contact-row">
+              <a href="mailto:delayatimothy@gmail.com">delayatimothy@gmail.com</a>
+              <a href="https://linkedin.com/in/timothydelaya" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://github.com/txxzd" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+          <footer class="footer">
+            <p>Timothy Zoe Delaya — Singapore</p>
+          </footer>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE & SKILLS VIEW -->
+      <section class="view" id="view-experience">
+        <div class="view__inner view__inner--scrollable">
+          <div class="section-header">
+            <h2>Experience &amp; Skills</h2>
+          </div>
+
+          <div class="experience-timeline">
+            <article class="terminal-card exp-card">
+              <div class="exp-header">
+                <h3>NeuroTree</h3>
+                <span class="exp-date">Sep 2025 - Apr 2026</span>
+              </div>
+              <p class="exp-role">AI Engineer Intern</p>
+              <ul>
+                <li>Developed a computer vision pipeline that analyses children's drawings to assess fine-motor skills</li>
+                <li>Built an agentic HR screening app that ranks candidates against job descriptions using keyword and vector search</li>
+                <li>Automated bill and expense data entry into Zoho Books by extracting structured data from documents using LLM</li>
+              </ul>
+            </article>
+
+            <article class="terminal-card exp-card">
+              <div class="exp-header">
+                <h3>Target Media SG</h3>
+                <span class="exp-date">Jan 2025 - Aug 2025</span>
+              </div>
+              <p class="exp-role">AI Engineer Intern</p>
+              <ul>
+                <li>Developed a hybrid SQL and vector database search tool, enabling semantic search across 3,000+ marketing assets</li>
+                <li>Automated keyframe selection in infographic videos using edge detection, condensing 15-second videos to keyframes</li>
+              </ul>
+            </article>
+
+            <article class="terminal-card exp-card">
+              <div class="exp-header">
+                <h3>OCBC</h3>
+                <span class="exp-date">Oct 2020 - Mar 2021</span>
+              </div>
+              <p class="exp-role">Game Developer Intern</p>
+              <ul>
+                <li>Designed and developed an interactive RPG for HR to showcase job roles within the bank</li>
+                <li>Built and deployed the game as an Android APK</li>
+              </ul>
+            </article>
+
+            <article class="terminal-card exp-card">
+              <div class="exp-header">
+                <h3>Tan Tock Seng Hospital</h3>
+                <span class="exp-date">Jun 2020 - Sep 2020</span>
+              </div>
+              <p class="exp-role">Game Developer Intern</p>
+              <ul>
+                <li>Led gameplay mechanics development for a health literacy game using Unity in a four-member team</li>
+                <li>Collaborated with designers to implement gameplay educating players on antibiotic misuse</li>
+              </ul>
+            </article>
+
+            <article class="terminal-card exp-card">
+              <div class="exp-header">
+                <h3>Multimodal Depression Detection</h3>
+                <span class="exp-date">Nov 2025</span>
+              </div>
+              <p class="exp-role">Publication — IEEE Xplore (APSIPA ASC 2025)</p>
+              <ul>
+                <li>Developed a multimodal Transformer model achieving 86.84% weighted F1 on binary depression classification for elderly</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="skills-section">
+            <h3>Skills</h3>
+            <div class="skills-grid">
+              <div class="skill-group">
+                <h4>Languages</h4>
+                <div class="chips">
+                  <span>Python</span>
+                  <span>C#</span>
+                  <span>Java</span>
+                  <span>C</span>
+                  <span>SQL</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <h4>Frameworks &amp; Libraries</h4>
+                <div class="chips">
+                  <span>PyTorch</span>
+                  <span>scikit-learn</span>
+                  <span>LangGraph</span>
+                  <span>LangChain</span>
+                  <span>OpenAI</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <h4>Tools &amp; Platforms</h4>
+                <div class="chips">
+                  <span>Docker</span>
+                  <span>AWS</span>
+                  <span>Unity</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS VIEW -->
+      <section class="view" id="view-projects">
+        <div class="view__inner view__inner--scrollable">
+          <div class="section-header">
+            <h2>Projects</h2>
+          </div>
+          <div class="grid project-grid">
+            <article class="terminal-card project-card">
+              <h3>Event Management System</h3>
+              <p>Cloud-based event management system deployed on AWS EC2 and RDS with Auto Scaling, Load Balancer, IAM, and VPC for high availability and security.</p>
+              <p class="project-meta">Tech: AWS, PHP, MySQL</p>
+            </article>
+            <article class="terminal-card project-card">
+              <h3>Agent Deployer</h3>
+              <p>AI agent powered by Gemini that automates Google Cloud deployment by scanning project codebases and generating Dockerfiles. Deployed web apps end-to-end without manual configuration.</p>
+              <p class="project-meta">Tech: Google Cloud, Gemini, Docker</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
