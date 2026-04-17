@@ -265,7 +265,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 80px 24px 24px;
+  padding: 80px 24px 56px;
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
@@ -276,7 +276,7 @@ main {
   align-items: stretch;
   overflow-y: auto;
   padding-top: 90px;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
 }
@@ -357,8 +357,7 @@ main {
 }
 
 /* Subtle inner top highlight for depth */
-.hero__panel::after,
-.project-card::after {
+.hero__panel::after {
   content: "";
   position: absolute;
   top: 0;
@@ -548,30 +547,32 @@ main {
   position: relative;
   color: var(--accent);
   text-decoration: none;
-  padding: 6px 2px;
+  padding: 6px 0;
   transition: color 200ms ease,
-              text-shadow 200ms ease,
-              transform 200ms var(--ease-out);
+              text-shadow 200ms ease;
 }
 
 .contact-row a::before,
 .contact-row a::after {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--muted);
   opacity: 0;
-  transition: opacity 200ms ease, transform 200ms var(--ease-out);
-  display: inline-block;
+  transition: opacity 200ms ease;
+  pointer-events: none;
 }
 
 .contact-row a::before {
   content: "[";
-  margin-right: 4px;
-  transform: translateX(4px);
+  right: 100%;
+  margin-right: 6px;
 }
 
 .contact-row a::after {
   content: "]";
-  margin-left: 4px;
-  transform: translateX(-4px);
+  left: 100%;
+  margin-left: 6px;
 }
 
 .contact-row a:hover,
@@ -585,7 +586,7 @@ main {
 .contact-row a:focus-visible::before,
 .contact-row a:focus-visible::after {
   opacity: 1;
-  transform: translateX(0);
+  color: var(--accent);
 }
 
 /* =============================================
@@ -598,16 +599,19 @@ main {
   gap: 14px;
   margin-bottom: 28px;
   position: relative;
+  overflow: hidden;
 }
 
 .section-header::after {
-  content: "";
+  content: "──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────";
   flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg,
-              rgba(255, 255, 255, 0.18),
-              transparent);
-  margin-left: 8px;
+  margin-left: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1;
 }
 
 .section-header h2 {
@@ -616,11 +620,20 @@ main {
   color: var(--text);
   font-weight: 400;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 .section-header h2 .prompt {
   color: var(--muted);
   margin-right: 8px;
+}
+
+.section-header h2::before {
+  content: "─ ";
+  color: rgba(255, 255, 255, 0.25);
+  margin-right: 4px;
 }
 
 .section-header h2::after {
@@ -644,81 +657,45 @@ main {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.project-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 /* =============================================
-   EXPERIENCE TIMELINE
+   EXPERIENCE — git log style
    ============================================= */
 
-.experience-timeline {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.git-log {
   width: 100%;
   margin-bottom: 32px;
-  padding-left: 32px;
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.88rem;
+  line-height: 1.6;
 }
 
-/* Vertical line */
-.experience-timeline::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  bottom: 8px;
-  left: 7px;
-  width: 1px;
-  background: var(--border);
-}
-
-.exp-card {
+.git-commit {
   position: relative;
-  padding: 20px 24px;
-  margin-bottom: 16px;
-  transition: border-color 300ms var(--ease-out),
-              box-shadow 300ms var(--ease-out),
-              transform 300ms var(--ease-out);
-}
-
-.exp-card:hover {
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: var(--shadow),
-              0 0 0 1px rgba(255, 255, 255, 0.04),
-              0 0 30px rgba(255, 255, 255, 0.05);
-}
-
-.exp-card:last-child {
-  margin-bottom: 0;
-}
-
-/* Timeline dot */
-.exp-card::before {
-  content: "";
-  position: absolute;
-  left: -32px;
-  top: 26px;
-  width: 13px;
-  height: 13px;
-  border-radius: 999px;
-  background: var(--bg);
-  border: 2px solid var(--border);
-  transform: translateX(-0.5px);
-  z-index: 1;
+  padding: 18px 18px 22px 24px;
+  margin-bottom: 8px;
+  border-left: 2px solid transparent;
   transition: border-color 300ms ease,
-              box-shadow 300ms ease,
               background 300ms ease;
 }
 
-.exp-card:hover::before {
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+.git-commit:hover {
+  border-left-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.015);
 }
 
-.exp-card:first-child::before {
+.git-commit--head {
+  border-left-color: var(--accent);
+}
+
+.git-commit--head::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 22px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
   background: var(--accent);
-  border-color: var(--accent);
   animation: timelinePulse 2.4s ease-in-out infinite;
 }
 
@@ -733,68 +710,99 @@ main {
   }
 }
 
-.exp-header {
+.git-commit__top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 16px;
   flex-wrap: wrap;
+  margin-bottom: 4px;
 }
 
-.exp-header h3 {
-  margin: 0;
+.git-commit__title {
   color: var(--accent);
-  font-size: 1.05rem;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.12);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.18);
+  letter-spacing: 0.01em;
+  line-height: 1.35;
 }
 
-.exp-date {
+.git-commit__date {
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   white-space: nowrap;
+  letter-spacing: 0.02em;
 }
 
-.exp-role {
+.git-commit__refs-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+  transition: opacity 250ms ease;
+}
+
+.git-commit:hover .git-commit__refs-line {
+  opacity: 0.85;
+}
+
+.git-commit__hash {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.git-commit__sep {
   color: var(--muted);
-  font-size: 0.9rem;
-  margin: 4px 0 0;
+  opacity: 0.5;
+}
+
+.git-commit__head-ref {
+  color: var(--accent);
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.git-commit__branch {
+  color: var(--text);
+}
+
+.git-commit__tag {
+  color: var(--text);
   font-style: italic;
 }
 
-.exp-card ul {
-  margin: 12px 0 0;
-  padding-left: 18px;
-}
-
-.exp-card li {
-  margin-bottom: 8px;
-  color: var(--text);
-  font-size: 0.9rem;
-}
-
-.exp-card ul {
+.git-commit__list {
   list-style: none;
-  padding-left: 0;
+  padding: 0;
+  margin: 0;
 }
 
-.exp-card li {
+.git-commit__list li {
   position: relative;
   padding-left: 18px;
+  margin-bottom: 6px;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
-.exp-card li::before {
-  content: "▸";
+.git-commit__list li::before {
+  content: "*";
   position: absolute;
-  left: 0;
+  left: 4px;
   top: 0;
   color: var(--muted);
-  font-size: 0.85rem;
-  transition: color 200ms ease, transform 200ms var(--ease-out);
+  font-weight: 700;
+  transition: color 200ms ease;
 }
 
-.exp-card:hover li::before {
+.git-commit:hover .git-commit__list li::before {
   color: var(--accent);
-  transform: translateX(2px);
 }
 
 /* =============================================
@@ -847,91 +855,144 @@ main {
 }
 
 /* =============================================
-   CARDS
+   PROJECTS — tree -L 2 style
    ============================================= */
 
-.project-card h3 {
-  margin-top: 0;
-  color: var(--accent);
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.tree-output {
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text);
+  padding: 8px 4px 4px;
 }
 
-.project-card h3::before {
-  content: "$";
-  color: var(--muted);
+.tree-row {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  column-gap: 0;
+}
+
+.tree-row--root {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.tree-row--folder {
+  grid-template-columns: auto 1fr;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.tree-glyph {
+  color: rgba(255, 255, 255, 0.22);
+  white-space: pre;
+  user-select: none;
+  transition: color 280ms ease;
+}
+
+.tree-folder-name {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+  letter-spacing: 0.01em;
+  transition: text-shadow 280ms ease;
+}
+
+.tree-row--root .tree-folder-name {
+  font-size: 0.95rem;
+  color: var(--text);
   font-weight: 400;
-  font-size: 0.9em;
+  text-shadow: none;
+}
+
+.tree-file-name {
+  color: var(--muted);
+  white-space: nowrap;
+  padding-right: 18px;
+  min-width: 12ch;
+  font-style: italic;
+  transition: color 220ms ease;
+}
+
+.tree-content {
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.tree-content--links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: center;
+}
+
+.tree-summary {
+  margin-top: 22px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  font-size: 0.8rem;
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+  font-family: "Roboto Mono", "Courier New", monospace;
+}
+
+.tree-project:hover .tree-glyph {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.tree-project:hover .tree-folder-name {
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.4);
+}
+
+.tree-project:hover .tree-file-name {
+  color: var(--text);
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px 14px;
+  font-size: 0.88rem;
+  line-height: 1.8;
 }
 
 .chips span {
   display: inline-flex;
-  padding: 8px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
+  align-items: center;
   color: var(--text);
-  font-size: 0.85rem;
-  background: rgba(255, 255, 255, 0.03);
-  transition: background 250ms ease,
-              border-color 250ms ease,
-              color 250ms ease,
-              transform 250ms var(--ease-out),
-              box-shadow 250ms ease;
+  letter-spacing: 0.04em;
   cursor: default;
+  transition: color 220ms ease, text-shadow 220ms ease;
+}
+
+.chips span::before,
+.chips span::after {
+  color: var(--muted);
+  opacity: 0.5;
+  transition: color 220ms ease, opacity 220ms ease;
+}
+
+.chips span::before {
+  content: "[ ";
+}
+
+.chips span::after {
+  content: " ]";
 }
 
 .chips span:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.4);
   color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
-              0 0 12px rgba(255, 255, 255, 0.08);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
-.project-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  transition: border-color 300ms var(--ease-out),
-              box-shadow 300ms var(--ease-out),
-              transform 300ms var(--ease-out);
-}
-
-.project-card:hover {
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: var(--shadow),
-              0 0 30px rgba(255, 255, 255, 0.06);
-  transform: translateY(-3px);
-}
-
-.project-card p {
-  color: var(--muted);
-  margin: 0;
-}
-
-.project-meta {
-  font-size: 0.85rem;
-  margin: 0;
-  padding-top: 12px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.1);
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-
-.project-links {
-  display: flex;
-  gap: 16px;
-  margin-top: auto;
-  padding-top: 4px;
+.chips span:hover::before,
+.chips span:hover::after {
+  color: var(--accent);
+  opacity: 1;
 }
 
 .project-link {
@@ -1000,6 +1061,136 @@ main {
 }
 
 /* =============================================
+   STATUS BAR (vim/tmux-style, fixed bottom)
+   ============================================= */
+
+.statusbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: stretch;
+  height: 26px;
+  background: rgba(15, 15, 15, 0.95);
+  border-top: 1px solid var(--border);
+  font-family: "Roboto Mono", "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  user-select: none;
+}
+
+.statusbar__seg {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+}
+
+.statusbar__seg--mode {
+  padding-left: 0;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.statusbar__seg--center {
+  justify-content: center;
+}
+
+.statusbar__seg--right {
+  justify-content: flex-end;
+}
+
+.statusbar__mode {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 0 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  font-size: 0.7rem;
+  position: relative;
+  box-shadow: 1px 0 0 var(--accent);
+}
+
+.statusbar__mode::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid var(--accent);
+}
+
+.statusbar__file {
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: 0.04em;
+  margin-left: 12px;
+}
+
+.statusbar__hint {
+  opacity: 0.55;
+  font-size: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusbar__hint kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.statusbar__live {
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusbar__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  animation: statusBlink 2s ease-in-out infinite;
+}
+
+.statusbar__sep {
+  opacity: 0.35;
+}
+
+.statusbar__time {
+  color: var(--text);
+  letter-spacing: 0.12em;
+}
+
+/* =============================================
    TYPING ANIMATION (initial load)
    ============================================= */
 
@@ -1023,8 +1214,7 @@ main {
    ============================================= */
 
 @media (max-width: 960px) {
-  .two-col,
-  .project-grid {
+  .two-col {
     grid-template-columns: 1fr;
   }
 }
@@ -1093,6 +1283,55 @@ main {
     padding: 20px 20px 22px;
   }
 
+  /* Tree — wrap content under file name on narrow screens */
+  .tree-output {
+    font-size: 0.82rem;
+  }
+
+  .tree-row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .tree-row > .tree-file-name {
+    grid-column: 2;
+    min-width: 0;
+    padding-right: 0;
+    padding-bottom: 2px;
+  }
+
+  .tree-row > .tree-content {
+    grid-column: 2;
+    padding-left: 14px;
+    padding-bottom: 6px;
+  }
+
+  .tree-folder-name {
+    font-size: 0.95rem;
+  }
+
+  /* Status bar — hide center hints, condense */
+  .statusbar__seg--center {
+    display: none;
+  }
+
+  .statusbar__file {
+    margin-left: 8px;
+    font-size: 0.62rem;
+  }
+
+  .statusbar__seg {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .statusbar__sep:first-of-type {
+    display: none;
+  }
+
+  .statusbar__enc {
+    display: none;
+  }
+
   /* Safety: allow scroll on home view if content overflows on very small screens */
   #view-home .view__inner {
     overflow-y: auto;
@@ -1109,7 +1348,8 @@ main {
   .cursor,
   .brand__dot,
   .terminal-status__dot,
-  .exp-card:first-child::before,
+  .statusbar__dot,
+  .git-commit--head::before,
   .section-header h2::after {
     animation: none;
   }
@@ -1127,8 +1367,6 @@ main {
   body::before {
     animation: none;
   }
-  .exp-card:hover,
-  .project-card:hover,
   .chips span:hover {
     transform: none;
   }
@@ -1149,25 +1387,13 @@ main {
     padding-bottom: 48px;
   }
 
-  /* Timeline */
-  .experience-timeline {
-    padding-left: 40px;
-  }
-
-  .experience-timeline::before {
-    left: 11px;
-  }
-
-  .exp-card::before {
-    left: -40px;
+  /* git log */
+  .git-commit {
+    padding-left: 28px;
   }
 
   /* Wider spacing */
   .skills-grid {
-    gap: 28px;
-  }
-
-  .project-grid {
     gap: 28px;
   }
 
@@ -1215,12 +1441,12 @@ main {
     padding: 28px;
   }
 
-  .exp-card {
-    padding: 24px 28px;
+  .git-commit {
+    padding: 22px 22px 26px 32px;
   }
 
   .terminal-body {
-    padding: 0 24px 24px;
+    padding: 32px 32px 32px;
   }
 
   /* Typography */

@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timothy ZD | Terminal Portfolio</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="css/styles.css?v=8" />
+    <script src="js/script.js?v=8" defer></script>
   </head>
   <body>
     <header class="topbar">
@@ -67,67 +67,89 @@
       <section class="view" id="view-experience">
         <div class="view__inner view__inner--scrollable">
           <div class="section-header">
-            <h2><span class="prompt">~/portfolio $</span> cat experience.log</h2>
+            <h2><span class="prompt">~/portfolio $</span> git log --decorate experience/</h2>
           </div>
 
-          <div class="experience-timeline">
-            <article class="terminal-card exp-card">
-              <div class="exp-header">
-                <h3>NeuroTree</h3>
-                <span class="exp-date">Sep 2025 - Apr 2026</span>
+          <div class="git-log">
+            <article class="git-commit git-commit--head">
+              <header class="git-commit__top">
+                <h3 class="git-commit__title">NeuroTree &mdash; AI Engineer Intern</h3>
+                <span class="git-commit__date">Sep 2025 &mdash; Apr 2026</span>
+              </header>
+              <div class="git-commit__refs-line">
+                <span class="git-commit__hash">commit a7f3c2d</span>
+                <span class="git-commit__sep">·</span>
+                <span class="git-commit__head-ref">HEAD &rarr; current</span>
+                <span class="git-commit__sep">·</span>
+                <span class="git-commit__branch">role/neurotree</span>
               </div>
-              <p class="exp-role">AI Engineer Intern</p>
-              <ul>
+              <ul class="git-commit__list">
                 <li>Developed a computer vision pipeline that analyses children's drawings to assess fine-motor skills</li>
                 <li>Built an agentic HR screening app that ranks candidates against job descriptions using keyword and vector search</li>
                 <li>Automated bill and expense data entry into Zoho Books by extracting structured data from documents using LLM</li>
               </ul>
             </article>
 
-            <article class="terminal-card exp-card">
-              <div class="exp-header">
-                <h3>Target Media SG</h3>
-                <span class="exp-date">Jan 2025 - Aug 2025</span>
+            <article class="git-commit">
+              <header class="git-commit__top">
+                <h3 class="git-commit__title">Multimodal Depression Detection &mdash; IEEE Xplore (APSIPA ASC 2025)</h3>
+                <span class="git-commit__date">Nov 2025</span>
+              </header>
+              <div class="git-commit__refs-line">
+                <span class="git-commit__hash">commit 5e9d3a7</span>
+                <span class="git-commit__sep">·</span>
+                <span class="git-commit__tag">tag: publication/apsipa-asc-2025</span>
               </div>
-              <p class="exp-role">AI Engineer Intern</p>
-              <ul>
+              <ul class="git-commit__list">
+                <li>Developed a multimodal Transformer model achieving 86.84% weighted F1 on binary depression classification for elderly</li>
+              </ul>
+            </article>
+
+            <article class="git-commit">
+              <header class="git-commit__top">
+                <h3 class="git-commit__title">Target Media SG &mdash; AI Engineer Intern</h3>
+                <span class="git-commit__date">Jan 2025 &mdash; Aug 2025</span>
+              </header>
+              <div class="git-commit__refs-line">
+                <span class="git-commit__hash">commit b3e8a1c</span>
+                <span class="git-commit__sep">·</span>
+                <span class="git-commit__branch">role/target-media</span>
+              </div>
+              <ul class="git-commit__list">
                 <li>Developed a hybrid SQL and vector database search tool, enabling semantic search across 3,000+ marketing assets</li>
                 <li>Automated keyframe selection in infographic videos using edge detection, condensing 15-second videos to keyframes</li>
               </ul>
             </article>
 
-            <article class="terminal-card exp-card">
-              <div class="exp-header">
-                <h3>OCBC</h3>
-                <span class="exp-date">Oct 2020 - Mar 2021</span>
+            <article class="git-commit">
+              <header class="git-commit__top">
+                <h3 class="git-commit__title">OCBC &mdash; Game Developer Intern</h3>
+                <span class="git-commit__date">Oct 2020 &mdash; Mar 2021</span>
+              </header>
+              <div class="git-commit__refs-line">
+                <span class="git-commit__hash">commit f2d9c5e</span>
+                <span class="git-commit__sep">·</span>
+                <span class="git-commit__branch">role/ocbc</span>
               </div>
-              <p class="exp-role">Game Developer Intern</p>
-              <ul>
+              <ul class="git-commit__list">
                 <li>Designed and developed an interactive RPG for HR to showcase job roles within the bank</li>
                 <li>Built and deployed the game as an Android APK</li>
               </ul>
             </article>
 
-            <article class="terminal-card exp-card">
-              <div class="exp-header">
-                <h3>Tan Tock Seng Hospital</h3>
-                <span class="exp-date">Jun 2020 - Sep 2020</span>
+            <article class="git-commit">
+              <header class="git-commit__top">
+                <h3 class="git-commit__title">Tan Tock Seng Hospital &mdash; Game Developer Intern</h3>
+                <span class="git-commit__date">Jun 2020 &mdash; Sep 2020</span>
+              </header>
+              <div class="git-commit__refs-line">
+                <span class="git-commit__hash">commit 8c4a1b6</span>
+                <span class="git-commit__sep">·</span>
+                <span class="git-commit__branch">role/tan-tock-seng</span>
               </div>
-              <p class="exp-role">Game Developer Intern</p>
-              <ul>
+              <ul class="git-commit__list">
                 <li>Led gameplay mechanics development for a health literacy game using Unity in a four-member team</li>
                 <li>Collaborated with designers to implement gameplay educating players on antibiotic misuse</li>
-              </ul>
-            </article>
-
-            <article class="terminal-card exp-card">
-              <div class="exp-header">
-                <h3>Multimodal Depression Detection</h3>
-                <span class="exp-date">Nov 2025</span>
-              </div>
-              <p class="exp-role">Publication — IEEE Xplore (APSIPA ASC 2025)</p>
-              <ul>
-                <li>Developed a multimodal Transformer model achieving 86.84% weighted F1 on binary depression classification for elderly</li>
               </ul>
             </article>
           </div>
@@ -172,30 +194,86 @@
       <section class="view" id="view-projects">
         <div class="view__inner view__inner--scrollable">
           <div class="section-header">
-            <h2><span class="prompt">~/portfolio $</span> ls projects/</h2>
+            <h2><span class="prompt">~/portfolio $</span> tree -L 2 projects/</h2>
           </div>
-          <div class="grid project-grid">
-            <article class="terminal-card project-card">
-              <h3>Event Management System</h3>
-              <p>Cloud-based event management system deployed on AWS EC2 and RDS with Auto Scaling, Load Balancer, IAM, and VPC for high availability and security.</p>
-              <p class="project-meta">Tech: AWS, PHP, MySQL</p>
-              <div class="project-links">
-                <a href="#" class="project-link" target="_blank" rel="noopener">source</a>
-                <a href="#" class="project-link" target="_blank" rel="noopener">demo</a>
+
+          <div class="tree-output">
+            <div class="tree-row tree-row--root">
+              <span class="tree-folder-name">projects/</span>
+            </div>
+
+            <article class="tree-project">
+              <div class="tree-row tree-row--folder">
+                <span class="tree-glyph">├── </span>
+                <span class="tree-folder-name">event-management-system/</span>
+              </div>
+              <div class="tree-row tree-row--file">
+                <span class="tree-glyph">│&nbsp;&nbsp;&nbsp; ├── </span>
+                <span class="tree-file-name">README.md</span>
+                <span class="tree-content">Cloud-based event management system deployed on AWS EC2 and RDS with Auto Scaling, Load Balancer, IAM, and VPC for high availability and security.</span>
+              </div>
+              <div class="tree-row tree-row--file">
+                <span class="tree-glyph">│&nbsp;&nbsp;&nbsp; ├── </span>
+                <span class="tree-file-name">stack.json</span>
+                <span class="tree-content">AWS &middot; PHP &middot; MySQL</span>
+              </div>
+              <div class="tree-row tree-row--file">
+                <span class="tree-glyph">│&nbsp;&nbsp;&nbsp; └── </span>
+                <span class="tree-file-name">links</span>
+                <span class="tree-content tree-content--links">
+                  <a href="#" class="project-link" target="_blank" rel="noopener">source</a>
+                  <a href="#" class="project-link" target="_blank" rel="noopener">demo</a>
+                </span>
               </div>
             </article>
-            <article class="terminal-card project-card">
-              <h3>Agent Deployer</h3>
-              <p>AI agent powered by Gemini that automates Google Cloud deployment by scanning project codebases and generating Dockerfiles. Deployed web apps end-to-end without manual configuration.</p>
-              <p class="project-meta">Tech: Google Cloud, Gemini, Docker</p>
-              <div class="project-links">
-                <a href="#" class="project-link" target="_blank" rel="noopener">source</a>
-                <a href="#" class="project-link" target="_blank" rel="noopener">demo</a>
+
+            <article class="tree-project">
+              <div class="tree-row tree-row--folder">
+                <span class="tree-glyph">└── </span>
+                <span class="tree-folder-name">agent-deployer/</span>
+              </div>
+              <div class="tree-row tree-row--file">
+                <span class="tree-glyph">&nbsp;&nbsp;&nbsp;&nbsp; ├── </span>
+                <span class="tree-file-name">README.md</span>
+                <span class="tree-content">AI agent powered by Gemini that automates Google Cloud deployment by scanning project codebases and generating Dockerfiles. Deployed web apps end-to-end without manual configuration.</span>
+              </div>
+              <div class="tree-row tree-row--file">
+                <span class="tree-glyph">&nbsp;&nbsp;&nbsp;&nbsp; ├── </span>
+                <span class="tree-file-name">stack.json</span>
+                <span class="tree-content">Google Cloud &middot; Gemini &middot; Docker</span>
+              </div>
+              <div class="tree-row tree-row--file">
+                <span class="tree-glyph">&nbsp;&nbsp;&nbsp;&nbsp; └── </span>
+                <span class="tree-file-name">links</span>
+                <span class="tree-content tree-content--links">
+                  <a href="#" class="project-link" target="_blank" rel="noopener">source</a>
+                  <a href="#" class="project-link" target="_blank" rel="noopener">demo</a>
+                </span>
               </div>
             </article>
+
+            <div class="tree-summary">2 directories, 6 files</div>
           </div>
         </div>
       </section>
     </main>
+
+    <footer class="statusbar" aria-hidden="true">
+      <div class="statusbar__seg statusbar__seg--mode">
+        <span class="statusbar__mode">NORMAL</span>
+        <span class="statusbar__file" id="statusbar-file">~/about.md</span>
+      </div>
+      <div class="statusbar__seg statusbar__seg--center">
+        <span class="statusbar__hint"><kbd>←</kbd> prev</span>
+        <span class="statusbar__hint">next <kbd>→</kbd></span>
+      </div>
+      <div class="statusbar__seg statusbar__seg--right">
+        <span class="statusbar__live"><span class="statusbar__dot"></span>online</span>
+        <span class="statusbar__sep">·</span>
+        <span class="statusbar__enc">utf-8</span>
+        <span class="statusbar__sep">·</span>
+        <span class="statusbar__time" id="statusbar-time">--:--</span>
+      </div>
+    </footer>
   </body>
 </html>

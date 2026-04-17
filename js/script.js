@@ -9,8 +9,33 @@
   const topbar = document.querySelector('.topbar');
 
   const viewOrder = ['home', 'experience', 'projects'];
+  const viewFiles = {
+    home: '~/about.md',
+    experience: '~/experience.log',
+    projects: '~/projects/'
+  };
   let currentView = 'home';
   let isTransitioning = false;
+
+  const statusFile = document.getElementById('statusbar-file');
+  const statusTime = document.getElementById('statusbar-time');
+
+  function updateStatusFile(viewId) {
+    if (statusFile && viewFiles[viewId]) {
+      statusFile.textContent = viewFiles[viewId];
+    }
+  }
+
+  function updateStatusTime() {
+    if (!statusTime) return;
+    var now = new Date();
+    var hh = String(now.getHours()).padStart(2, '0');
+    var mm = String(now.getMinutes()).padStart(2, '0');
+    statusTime.textContent = hh + ':' + mm;
+  }
+
+  updateStatusTime();
+  setInterval(updateStatusTime, 30000);
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -55,6 +80,7 @@
       }
       currentView = viewId;
       updateHash(viewId);
+      updateStatusFile(viewId);
     }, delay);
 
     // Unlock transitions
@@ -176,6 +202,7 @@
       link.classList.toggle('active', link.dataset.view === initialHash);
     });
     currentView = initialHash;
+    updateStatusFile(initialHash);
   }
 
 })();
