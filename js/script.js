@@ -96,6 +96,13 @@
     });
   }
 
+  var cta = document.querySelector('.nav__cta');
+  if (cta) {
+    cta.addEventListener('click', function () {
+      topbar.classList.remove('nav-open');
+    });
+  }
+
   if (toggle) {
     toggle.addEventListener('click', function () {
       topbar.classList.toggle('nav-open');
