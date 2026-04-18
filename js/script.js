@@ -1,208 +1,156 @@
 (function () {
   'use strict';
 
-  // DOM references
-  const navLinks = document.querySelectorAll('.nav__link');
-  const views = document.querySelectorAll('.view');
-  const brand = document.querySelector('.brand');
-  const toggle = document.querySelector('.nav-toggle');
-  const topbar = document.querySelector('.topbar');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const app = document.getElementById('app');
 
-  const viewOrder = ['home', 'experience', 'projects'];
+  /* =============================================================
+     BOOT SEQUENCE
+  ============================================================= */
+  const bootEl = document.getElementById('boot');
+  const bootLog = document.getElementById('boot-log');
+
+  const bootLines = [
+    { t: '[  OK  ]', msg: 'initializing shell …', d: 120 },
+    { t: '[  OK  ]', msg: 'mount /home/timothy', d: 140 },
+    { t: '[  OK  ]', msg: 'loading resume.manifest', d: 180 },
+    { t: '[  OK  ]', msg: '3 experiences · 2 projects · 1 publication', d: 220 },
+    { t: '[ INFO ]', msg: 'tty attached · 80x24', d: 180 },
+    { t: '[ DONE ]', msg: 'welcome, guest — press any key', d: 260 }
+  ];
+
+  function typeBoot(i) {
+    if (i >= bootLines.length) {
+      setTimeout(endBoot, 420);
+      return;
+    }
+    const { t, msg, d } = bootLines[i];
+    bootLog.textContent += `${t} ${msg}\n`;
+    setTimeout(() => typeBoot(i + 1), d);
+  }
+
+  function endBoot() {
+    bootEl.classList.add('boot--done');
+    app.classList.add('app--ready');
+    setTimeout(() => bootEl.remove(), 700);
+  }
+
+  const bootPlayed = sessionStorage.getItem('tzd_boot_played');
+  if (bootPlayed || prefersReducedMotion) {
+    bootEl.remove();
+    app.classList.add('app--ready');
+  } else {
+    sessionStorage.setItem('tzd_boot_played', '1');
+    const skip = (e) => {
+      if (e) e.preventDefault();
+      endBoot();
+      window.removeEventListener('keydown', skip);
+      window.removeEventListener('click', skip);
+    };
+    window.addEventListener('keydown', skip, { once: true });
+    window.addEventListener('click', skip, { once: true });
+    setTimeout(() => typeBoot(0), 240);
+  }
+
+  /* =============================================================
+     VIEW ROUTING
+  ============================================================= */
+  const viewOrder = ['home', 'work', 'projects'];
   const viewFiles = {
     home: '~/about.md',
-    experience: '~/experience.log',
+    work: '~/work.log',
     projects: '~/projects/'
   };
+  const pathFiles = {
+    home: '~',
+    work: '~/work',
+    projects: '~/projects'
+  };
+
   let currentView = 'home';
-  let isTransitioning = false;
-
+  const navLinks = document.querySelectorAll('.nav__link');
   const statusFile = document.getElementById('statusbar-file');
-  const statusTime = document.getElementById('statusbar-time');
+  const topbarPath = document.getElementById('topbar-path');
 
-  function updateStatusFile(viewId) {
-    if (statusFile && viewFiles[viewId]) {
-      statusFile.textContent = viewFiles[viewId];
-    }
+  function switchView(v) {
+    if (v === currentView || !viewOrder.includes(v)) return;
+    const current = document.querySelector('.view--active');
+    const next = document.getElementById('view-' + v);
+    if (!next) return;
+
+    if (current) current.classList.remove('view--active');
+    next.classList.add('view--active');
+
+    const s = next.querySelector('.stage--scroll');
+    if (s) s.scrollTop = 0;
+
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.view === v));
+
+    if (statusFile) statusFile.textContent = viewFiles[v];
+    if (topbarPath) topbarPath.textContent = pathFiles[v];
+
+    history.replaceState(null, '', '#' + v);
+    currentView = v;
   }
 
-  function updateStatusTime() {
-    if (!statusTime) return;
-    var now = new Date();
-    var hh = String(now.getHours()).padStart(2, '0');
-    var mm = String(now.getMinutes()).padStart(2, '0');
-    statusTime.textContent = hh + ':' + mm;
-  }
-
-  updateStatusTime();
-  setInterval(updateStatusTime, 30000);
-
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  // ---- View switching ----
-
-  function switchView(viewId) {
-    if (viewId === currentView || isTransitioning) return;
-    isTransitioning = true;
-
-    // Scan-line sweep effect
-    if (!prefersReducedMotion.matches) {
-      const sweep = document.createElement('div');
-      sweep.className = 'scanline-sweep';
-      document.body.appendChild(sweep);
-      sweep.addEventListener('animationend', function () {
-        sweep.remove();
-      });
-    }
-
-    // Deactivate current view
-    const activeView = document.querySelector('.view--active');
-    if (activeView) {
-      activeView.classList.remove('view--active');
-    }
-
-    // Update nav active states
-    navLinks.forEach(function (link) {
-      link.classList.toggle('active', link.dataset.view === viewId);
-    });
-
-    // Activate new view after brief delay for cross-fade
-    var delay = prefersReducedMotion.matches ? 0 : 100;
-    setTimeout(function () {
-      var newView = document.getElementById('view-' + viewId);
-      if (newView) {
-        // Reset scroll position for scrollable views
-        var scrollable = newView.querySelector('.view__inner--scrollable');
-        if (scrollable) {
-          scrollable.scrollTop = 0;
-        }
-        newView.classList.add('view--active');
-      }
-      currentView = viewId;
-      updateHash(viewId);
-      updateStatusFile(viewId);
-    }, delay);
-
-    // Unlock transitions
-    var lockDuration = prefersReducedMotion.matches ? 50 : 500;
-    setTimeout(function () {
-      isTransitioning = false;
-    }, lockDuration);
-  }
-
-  // ---- Hash routing ----
-
-  function updateHash(viewId) {
-    history.pushState(null, '', viewId === 'home' ? '#' : '#' + viewId);
-  }
-
-  window.addEventListener('popstate', function () {
-    var hash = location.hash.slice(1) || 'home';
-    if (viewOrder.indexOf(hash) !== -1) {
-      switchView(hash);
-    }
-  });
-
-  // ---- Event listeners ----
-
-  navLinks.forEach(function (link) {
-    link.addEventListener('click', function (e) {
+  navLinks.forEach(l => {
+    if (!l.dataset.view) return;
+    l.addEventListener('click', (e) => {
       e.preventDefault();
-      switchView(link.dataset.view);
-      // Close mobile nav if open
-      topbar.classList.remove('nav-open');
+      switchView(l.dataset.view);
     });
   });
 
-  if (brand) {
-    brand.addEventListener('click', function (e) {
-      e.preventDefault();
-      switchView('home');
-      topbar.classList.remove('nav-open');
-    });
+  const initHash = location.hash.replace('#', '');
+  if (viewOrder.includes(initHash) && initHash !== 'home') {
+    document.querySelector('.view--active')?.classList.remove('view--active');
+    document.getElementById('view-' + initHash)?.classList.add('view--active');
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.view === initHash));
+    if (statusFile) statusFile.textContent = viewFiles[initHash];
+    if (topbarPath) topbarPath.textContent = pathFiles[initHash];
+    currentView = initHash;
   }
 
-  var cta = document.querySelector('.nav__cta');
-  if (cta) {
-    cta.addEventListener('click', function () {
-      topbar.classList.remove('nav-open');
-    });
-  }
+  /* =============================================================
+     KEYBOARD NAV
+  ============================================================= */
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input, textarea, [contenteditable="true"]')) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
 
-  if (toggle) {
-    toggle.addEventListener('click', function () {
-      topbar.classList.toggle('nav-open');
-    });
-  }
-
-  // ---- Keyboard navigation ----
-
-  document.addEventListener('keydown', function (e) {
-    // Don't capture if user is typing in an input
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      var idx = viewOrder.indexOf(currentView);
-      var next = viewOrder[(idx + 1) % viewOrder.length];
-      switchView(next);
-    }
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      var idx = viewOrder.indexOf(currentView);
-      var prev = viewOrder[(idx - 1 + viewOrder.length) % viewOrder.length];
-      switchView(prev);
-    }
+    if (e.key === 'ArrowRight' || e.key === 'l') {
+      const i = viewOrder.indexOf(currentView);
+      switchView(viewOrder[(i + 1) % viewOrder.length]);
+    } else if (e.key === 'ArrowLeft' || e.key === 'h') {
+      const i = viewOrder.indexOf(currentView);
+      switchView(viewOrder[(i - 1 + viewOrder.length) % viewOrder.length]);
+    } else if (e.key === '1') switchView('home');
+    else if (e.key === '2') switchView('work');
+    else if (e.key === '3') switchView('projects');
   });
 
-  // ---- Typing animation on initial load ----
-
-  function runInitialTyping() {
-    var h1 = document.querySelector('#view-home .hero__title');
-    if (!h1) return;
-
-    var fullText = h1.textContent;
-    h1.textContent = '';
-    h1.classList.add('hero__title--typing');
-
-    var i = 0;
-    var speed = 80;
-
-    function type() {
-      if (i < fullText.length) {
-        h1.textContent += fullText.charAt(i);
-        i++;
-        setTimeout(type, speed);
-      } else {
-        // Typing done — keep caret blinking briefly, then remove
-        setTimeout(function () {
-          h1.classList.remove('hero__title--typing');
-          h1.classList.add('hero__title--done');
-        }, 1200);
-      }
-    }
-
-    setTimeout(type, 500);
-  }
-
-  if (!prefersReducedMotion.matches) {
-    runInitialTyping();
-  }
-
-  // ---- Handle initial hash on page load ----
-
-  var initialHash = location.hash.slice(1);
-  if (initialHash && viewOrder.indexOf(initialHash) !== -1 && initialHash !== 'home') {
-    // Switch to the hash view without animation
-    var activeView = document.querySelector('.view--active');
-    if (activeView) activeView.classList.remove('view--active');
-    var target = document.getElementById('view-' + initialHash);
-    if (target) target.classList.add('view--active');
-    navLinks.forEach(function (link) {
-      link.classList.toggle('active', link.dataset.view === initialHash);
+  /* =============================================================
+     PROJECT EXPAND/COLLAPSE
+  ============================================================= */
+  document.querySelectorAll('.project__row').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const project = btn.closest('.project');
+      const expanded = project.dataset.expanded === 'true';
+      project.dataset.expanded = expanded ? 'false' : 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
     });
-    currentView = initialHash;
-    updateStatusFile(initialHash);
+  });
+
+  /* =============================================================
+     STATUSBAR CLOCK
+  ============================================================= */
+  const timeEl = document.getElementById('statusbar-time');
+  function tick() {
+    if (!timeEl) return;
+    const d = new Date();
+    timeEl.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   }
+  tick();
+  setInterval(tick, 30000);
 
 })();

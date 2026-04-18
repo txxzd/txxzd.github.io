@@ -1,270 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Timothy ZD | Terminal Portfolio</title>
-    <link rel="stylesheet" href="css/styles.css?v=12" />
-    <script src="js/script.js?v=12" defer></script>
-  </head>
-  <body>
-    <header class="topbar">
-      <a href="#" class="brand" data-view="home">
-        <span class="brand__dot"></span>
-        <span>timothyzd.dev</span>
-      </a>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav" aria-label="Primary">
-        <a href="#experience" class="nav__link" data-view="experience">Experience</a>
-        <a href="#projects" class="nav__link" data-view="projects">Projects</a>
-        <a href="mailto:delayatimothy@gmail.com" class="nav__cta">./contact</a>
-      </nav>
-    </header>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Timothy ZD — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+<script src="js/script.js" defer></script>
+</head>
+<body>
 
-    <main>
-      <!-- HOME VIEW: about me + terminal branding -->
-      <section class="view view--active" id="view-home">
-        <div class="view__inner">
-          <div class="terminal-card hero__panel">
-            <div class="terminal-bar">
-              <span class="terminal-light"></span>
-              <span class="terminal-light"></span>
-              <span class="terminal-light"></span>
-              <span class="terminal-title">~/about.md</span>
-              <span class="terminal-status"><span class="terminal-status__dot"></span>online</span>
-            </div>
-            <div class="terminal-body">
-              <p class="hero__eyebrow">&gt; WELCOME</p>
-              <h1 class="hero__title">Timothy ZD</h1>
-              <p class="hero__lead">I build clean web experiences, automate workflows, and ship polished product demos.</p>
-              <div class="hero__prompt">
-                <span class="hero__prompt-path">~/portfolio</span>
-                <span class="hero__prompt-sep">$</span>
-                <span class="hero__prompt-cmd">whoami</span>
-                <span class="cursor">_</span>
-              </div>
-            </div>
-          </div>
-          <div class="about-content">
-            <p>Hi — I'm Timothy, a fresh graduate from the Singapore Institute of Technology with a BSc (Hons) in Applied Artificial Intelligence. I have a strong interest in machine learning and AI agents — from training models that solve real problems to designing agentic workflows that automate real-world tasks. I'm always looking for ways to push what's possible with AI and ship things that work.</p>
-            <div class="contact-row">
-              <a href="mailto:delayatimothy@gmail.com">delayatimothy@gmail.com</a>
-              <a href="https://linkedin.com/in/timothydelaya" target="_blank" rel="noopener">LinkedIn</a>
-              <a href="https://github.com/txxzd" target="_blank" rel="noopener">GitHub</a>
-            </div>
-          </div>
-          <footer class="footer">
-            <p>Timothy Zoe Delaya — Singapore</p>
-          </footer>
-        </div>
-      </section>
+<!-- BOOT SEQUENCE OVERLAY -->
+<div id="boot" class="boot" aria-hidden="true">
+  <div class="boot__inner">
+    <pre class="boot__log" id="boot-log"></pre>
+    <div class="boot__cursor">▊</div>
+  </div>
+</div>
 
-      <!-- EXPERIENCE & SKILLS VIEW -->
-      <section class="view" id="view-experience">
-        <div class="view__inner view__inner--scrollable">
-          <div class="section-header">
-            <h2><span class="prompt">~/portfolio $</span> git log --decorate experience/</h2>
+<div class="app" id="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <span class="brand">
+        <span class="brand__mark">◆</span>
+        <span class="brand__name">timothyzd</span>
+        <span class="brand__sep">/</span>
+        <span class="brand__path" id="topbar-path">~</span>
+      </span>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="#home"     class="nav__link active" data-view="home">     <span class="nav__num">01</span> <span>home</span>     </a>
+      <a href="#work"     class="nav__link"        data-view="work">     <span class="nav__num">02</span> <span>work</span>     </a>
+      <a href="#projects" class="nav__link"        data-view="projects"> <span class="nav__num">03</span> <span>projects</span> </a>
+      <div class="nav__sociallinks" aria-label="social">
+        <a href="https://github.com/txxzd" target="_blank" rel="noopener" class="nav__social" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.27-1.69-1.27-1.69-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.02 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.56-.3-5.24-1.29-5.24-5.75 0-1.27.45-2.3 1.19-3.11-.12-.3-.52-1.48.11-3.08 0 0 .97-.31 3.18 1.19a11 11 0 0 1 5.78 0c2.21-1.5 3.18-1.19 3.18-1.19.63 1.6.23 2.78.11 3.08.74.81 1.19 1.84 1.19 3.11 0 4.47-2.69 5.45-5.25 5.74.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56 4.56-1.53 7.85-5.84 7.85-10.93C23.5 5.74 18.27.5 12 .5z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/timothydelaya" target="_blank" rel="noopener" class="nav__social" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S.02 4.88.02 3.5 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM.25 8.25h4.5V23H.25V8.25zM8 8.25h4.31v2.02h.06c.6-1.13 2.07-2.33 4.26-2.33 4.55 0 5.39 3 5.39 6.89V23h-4.5v-6.66c0-1.59-.03-3.63-2.21-3.63-2.22 0-2.56 1.73-2.56 3.51V23H8V8.25z"/></svg>
+        </a>
+      </div>
+      <a href="mailto:delayatimothy@gmail.com" class="nav__cta">contact<span class="nav__cta-arrow">→</span></a>
+    </nav>
+  </header>
+
+  <main class="main">
+
+    <!-- ========== HOME ========== -->
+    <section class="view view--active" id="view-home" data-screen-label="01 Home">
+      <div class="stage">
+
+        <div class="hero">
+          <div class="hero__eyebrow">
+            <span class="hero__dot"></span>
+            <span>AVAILABLE FOR FULL-TIME ROLES · APR 2026</span>
           </div>
 
-          <div class="git-log">
-            <article class="git-commit git-commit--head">
-              <header class="git-commit__top">
-                <h3 class="git-commit__title">NeuroTree &mdash; AI Engineer Intern</h3>
-                <span class="git-commit__date">Sep 2025 &mdash; Apr 2026</span>
-              </header>
-              <div class="git-commit__refs-line">
-                <span class="git-commit__hash">commit a7f3c2d</span>
-                <span class="git-commit__sep">·</span>
-                <span class="git-commit__head-ref">HEAD &rarr; current</span>
-                <span class="git-commit__sep">·</span>
-                <span class="git-commit__branch">role/neurotree</span>
-              </div>
-              <ul class="git-commit__list">
-                <li>Developed a computer vision pipeline that analyses children's drawings to assess fine-motor skills</li>
-                <li>Built an agentic HR screening app that ranks candidates against job descriptions using keyword and vector search</li>
-                <li>Automated bill and expense data entry into Zoho Books by extracting structured data from documents using LLM</li>
-              </ul>
-            </article>
+          <h1 class="hero__title">
+            <span class="hero__title-first">Timothy</span>
+            <span class="hero__title-last">Zoe Delaya</span>
+          </h1>
 
-            <article class="git-commit">
-              <header class="git-commit__top">
-                <h3 class="git-commit__title">Multimodal Depression Detection &mdash; IEEE Xplore (APSIPA ASC 2025)</h3>
-                <span class="git-commit__date">Nov 2025</span>
-              </header>
-              <div class="git-commit__refs-line">
-                <span class="git-commit__hash">commit 5e9d3a7</span>
-                <span class="git-commit__sep">·</span>
-                <span class="git-commit__tag">tag: publication/apsipa-asc-2025</span>
-              </div>
-              <ul class="git-commit__list">
-                <li>Developed a multimodal Transformer model achieving 86.84% weighted F1 on binary depression classification for elderly</li>
-              </ul>
-            </article>
+          <p class="hero__lead">
+            AI engineer &amp; builder based in Singapore. I train models that solve
+            <em>real</em> problems and design agentic workflows that automate real-world tasks.
+          </p>
 
-            <article class="git-commit">
-              <header class="git-commit__top">
-                <h3 class="git-commit__title">Target Media SG &mdash; AI Engineer Intern</h3>
-                <span class="git-commit__date">Jan 2025 &mdash; Aug 2025</span>
-              </header>
-              <div class="git-commit__refs-line">
-                <span class="git-commit__hash">commit b3e8a1c</span>
-                <span class="git-commit__sep">·</span>
-                <span class="git-commit__branch">role/target-media</span>
-              </div>
-              <ul class="git-commit__list">
-                <li>Developed a hybrid SQL and vector database search tool, enabling semantic search across 3,000+ marketing assets</li>
-                <li>Automated keyframe selection in infographic videos using edge detection, condensing 15-second videos to keyframes</li>
-              </ul>
-            </article>
-
-            <article class="git-commit">
-              <header class="git-commit__top">
-                <h3 class="git-commit__title">OCBC &mdash; Game Developer Intern</h3>
-                <span class="git-commit__date">Oct 2020 &mdash; Mar 2021</span>
-              </header>
-              <div class="git-commit__refs-line">
-                <span class="git-commit__hash">commit f2d9c5e</span>
-                <span class="git-commit__sep">·</span>
-                <span class="git-commit__branch">role/ocbc</span>
-              </div>
-              <ul class="git-commit__list">
-                <li>Designed and developed an interactive RPG for HR to showcase job roles within the bank</li>
-                <li>Built and deployed the game as an Android APK</li>
-              </ul>
-            </article>
-
-            <article class="git-commit">
-              <header class="git-commit__top">
-                <h3 class="git-commit__title">Tan Tock Seng Hospital &mdash; Game Developer Intern</h3>
-                <span class="git-commit__date">Jun 2020 &mdash; Sep 2020</span>
-              </header>
-              <div class="git-commit__refs-line">
-                <span class="git-commit__hash">commit 8c4a1b6</span>
-                <span class="git-commit__sep">·</span>
-                <span class="git-commit__branch">role/tan-tock-seng</span>
-              </div>
-              <ul class="git-commit__list">
-                <li>Led gameplay mechanics development for a health literacy game using Unity in a four-member team</li>
-                <li>Collaborated with designers to implement gameplay educating players on antibiotic misuse</li>
-              </ul>
-            </article>
+          <div class="hero__meta">
+            <div class="hero__meta-col">
+              <div class="hero__meta-label">role</div>
+              <div class="hero__meta-val">AI Engineer Intern</div>
+              <div class="hero__meta-sub">NeuroTree · current</div>
+            </div>
+            <div class="hero__meta-col">
+              <div class="hero__meta-label">education</div>
+              <div class="hero__meta-val">BSc (Hons), Applied AI</div>
+              <div class="hero__meta-sub">Singapore Institute of Technology</div>
+            </div>
+            <div class="hero__meta-col">
+              <div class="hero__meta-label">focus</div>
+              <div class="hero__meta-val">Agents · ML · Vision</div>
+              <div class="hero__meta-sub">PyTorch · LangGraph · Docker</div>
+            </div>
           </div>
 
-          <div class="skills-section">
-            <h3>Skills</h3>
-            <div class="skills-grid">
-              <div class="skill-group">
-                <h4>Languages</h4>
-                <div class="chips">
-                  <span>Python</span>
-                  <span>C#</span>
-                  <span>Java</span>
-                  <span>C</span>
-                  <span>SQL</span>
-                </div>
-              </div>
-              <div class="skill-group">
-                <h4>Frameworks &amp; Libraries</h4>
-                <div class="chips">
-                  <span>PyTorch</span>
-                  <span>scikit-learn</span>
-                  <span>LangGraph</span>
-                  <span>LangChain</span>
-                  <span>OpenAI</span>
-                </div>
-              </div>
-              <div class="skill-group">
-                <h4>Tools &amp; Platforms</h4>
-                <div class="chips">
-                  <span>Docker</span>
-                  <span>AWS</span>
-                  <span>Unity</span>
-                </div>
-              </div>
-            </div>
+          <div class="hero__links">
+            <a href="mailto:delayatimothy@gmail.com" class="hero__link">
+              <span class="hero__link-label">email</span>
+              <span class="hero__link-val">delayatimothy@gmail.com</span>
+              <span class="hero__link-arrow">↗</span>
+            </a>
+            <a href="https://github.com/txxzd" target="_blank" rel="noopener" class="hero__link">
+              <span class="hero__link-label">github</span>
+              <span class="hero__link-val">@txxzd</span>
+              <span class="hero__link-arrow">↗</span>
+            </a>
+            <a href="https://linkedin.com/in/timothydelaya" target="_blank" rel="noopener" class="hero__link">
+              <span class="hero__link-label">linkedin</span>
+              <span class="hero__link-val">in/timothydelaya</span>
+              <span class="hero__link-arrow">↗</span>
+            </a>
+          </div>
+
+          <div class="hero__prompt">
+            <span class="prompt__user">timothy</span><span class="prompt__at">@</span><span class="prompt__host">portfolio</span>
+            <span class="prompt__sep">:</span>
+            <span class="prompt__path">~</span>
+            <span class="prompt__sign">$</span>
+            <span class="prompt__cmd">cat about.md</span>
+            <span class="prompt__caret">▊</span>
           </div>
         </div>
-      </section>
 
-      <!-- PROJECTS VIEW -->
-      <section class="view" id="view-projects">
-        <div class="view__inner view__inner--scrollable">
-          <div class="section-header">
-            <h2><span class="prompt">~/portfolio $</span> tree -L 2 projects/</h2>
+      </div>
+    </section>
+
+    <!-- ========== WORK ========== -->
+    <section class="view" id="view-work" data-screen-label="02 Work">
+      <div class="stage stage--scroll">
+
+        <header class="sect__head">
+          <div class="sect__num">02</div>
+          <div class="sect__titleblock">
+            <h2 class="sect__title">Work Log</h2>
+            <p class="sect__sub">git log --decorate --author="timothy" experience/</p>
           </div>
+          <div class="sect__rule"></div>
+          <div class="sect__count">5 commits</div>
+        </header>
 
-          <div class="tree-output">
-            <div class="tree-row tree-row--root">
-              <span class="tree-folder-name">projects/</span>
+        <div class="log">
+
+          <article class="log__entry log__entry--head">
+            <div class="log__rail"><span class="log__node"></span></div>
+            <div class="log__body">
+              <div class="log__meta">
+                <span class="log__hash">a7f3c2d</span>
+                <span class="log__ref log__ref--head">HEAD → main</span>
+                <span class="log__ref">role/neurotree</span>
+                <span class="log__date">Sep 2025 — Apr 2026</span>
+              </div>
+              <h3 class="log__title">AI Engineer Intern <span class="log__at">@</span> <span class="log__org">NeuroTree</span></h3>
+              <ul class="log__bullets">
+                <li>Built a computer-vision pipeline that analyses children's drawings to assess fine-motor skills.</li>
+                <li>Shipped an agentic HR-screening app that ranks candidates against JDs via keyword + vector search.</li>
+                <li>Automated bill &amp; expense entry into Zoho Books by extracting structured data from docs with LLMs.</li>
+              </ul>
+              <div class="log__tags">
+                <span>Python</span><span>PyTorch</span><span>LangGraph</span><span>OpenAI</span><span>OCR</span>
+              </div>
             </div>
+          </article>
 
-            <article class="tree-project">
-              <div class="tree-row tree-row--folder">
-                <span class="tree-glyph">├── </span>
-                <span class="tree-folder-name">event-management-system/</span>
+          <article class="log__entry">
+            <div class="log__rail"><span class="log__node"></span></div>
+            <div class="log__body">
+              <div class="log__meta">
+                <span class="log__hash">5e9d3a7</span>
+                <span class="log__ref log__ref--tag">tag: publication/apsipa-asc-2025</span>
+                <span class="log__date">Nov 2025</span>
               </div>
-              <div class="tree-row tree-row--file">
-                <span class="tree-glyph">│&nbsp;&nbsp;&nbsp; ├── </span>
-                <span class="tree-file-name">README.md</span>
-                <span class="tree-content">Cloud-based event management system deployed on AWS EC2 and RDS with Auto Scaling, Load Balancer, IAM, and VPC for high availability and security.</span>
+              <h3 class="log__title">Multimodal Depression Detection <span class="log__at">—</span> <span class="log__org">IEEE Xplore</span></h3>
+              <ul class="log__bullets">
+                <li>Published a multimodal Transformer achieving <strong>86.84% weighted F1</strong> on binary depression classification for the elderly.</li>
+              </ul>
+              <div class="log__tags">
+                <span>Transformer</span><span>Multimodal</span><span>Speech</span><span>Vision</span>
               </div>
-              <div class="tree-row tree-row--file">
-                <span class="tree-glyph">│&nbsp;&nbsp;&nbsp; └── </span>
-                <span class="tree-file-name">stack.json</span>
-                <span class="tree-content">AWS &middot; PHP &middot; MySQL</span>
-              </div>
-            </article>
+            </div>
+          </article>
 
-            <article class="tree-project">
-              <div class="tree-row tree-row--folder">
-                <span class="tree-glyph">└── </span>
-                <span class="tree-folder-name">agent-deployer/</span>
+          <article class="log__entry">
+            <div class="log__rail"><span class="log__node"></span></div>
+            <div class="log__body">
+              <div class="log__meta">
+                <span class="log__hash">b3e8a1c</span>
+                <span class="log__ref">role/target-media</span>
+                <span class="log__date">Jan 2025 — Aug 2025</span>
               </div>
-              <div class="tree-row tree-row--file">
-                <span class="tree-glyph">&nbsp;&nbsp;&nbsp;&nbsp; ├── </span>
-                <span class="tree-file-name">README.md</span>
-                <span class="tree-content">AI-powered deployment tool pairing a Python (FastAPI) backend with a VS Code extension. Uses Gemini with agentic tools to iteratively explore a project, generate a Dockerfile, build the image, and deploy it to Google Cloud Run via Artifact Registry — end-to-end with OAuth auth and runtime env var support.</span>
+              <h3 class="log__title">AI Engineer Intern <span class="log__at">@</span> <span class="log__org">Target Media SG</span></h3>
+              <ul class="log__bullets">
+                <li>Developed a hybrid SQL + vector search tool enabling semantic search across <strong>3,000+</strong> marketing assets.</li>
+                <li>Automated keyframe selection in infographic videos using edge detection — condensing 15-sec videos to keyframes.</li>
+              </ul>
+              <div class="log__tags">
+                <span>SQL</span><span>Vector DB</span><span>OpenCV</span>
               </div>
-              <div class="tree-row tree-row--file">
-                <span class="tree-glyph">&nbsp;&nbsp;&nbsp;&nbsp; ├── </span>
-                <span class="tree-file-name">stack.json</span>
-                <span class="tree-content">Python &middot; FastAPI &middot; TypeScript &middot; Gemini &middot; Docker &middot; Cloud Run</span>
-              </div>
-              <div class="tree-row tree-row--file">
-                <span class="tree-glyph">&nbsp;&nbsp;&nbsp;&nbsp; └── </span>
-                <span class="tree-file-name">links</span>
-                <span class="tree-content tree-content--links">
-                  <a href="https://github.com/mefetsi/hackathon-project-deployer" class="project-link" target="_blank" rel="noopener">source</a>
-                </span>
-              </div>
-            </article>
+            </div>
+          </article>
 
-            <div class="tree-summary">2 directories, 5 files</div>
+          <article class="log__entry">
+            <div class="log__rail"><span class="log__node"></span></div>
+            <div class="log__body">
+              <div class="log__meta">
+                <span class="log__hash">f2d9c5e</span>
+                <span class="log__ref">role/ocbc</span>
+                <span class="log__date">Oct 2020 — Mar 2021</span>
+              </div>
+              <h3 class="log__title">Game Developer Intern <span class="log__at">@</span> <span class="log__org">OCBC</span></h3>
+              <ul class="log__bullets">
+                <li>Designed &amp; developed an interactive RPG for HR to showcase job roles within the bank.</li>
+                <li>Built and deployed the game as an Android APK.</li>
+              </ul>
+              <div class="log__tags"><span>Unity</span><span>C#</span><span>Android</span></div>
+            </div>
+          </article>
+
+          <article class="log__entry log__entry--last">
+            <div class="log__rail"><span class="log__node"></span></div>
+            <div class="log__body">
+              <div class="log__meta">
+                <span class="log__hash">8c4a1b6</span>
+                <span class="log__ref">role/ttsh</span>
+                <span class="log__date">Jun 2020 — Sep 2020</span>
+              </div>
+              <h3 class="log__title">Game Developer Intern <span class="log__at">@</span> <span class="log__org">Tan Tock Seng Hospital</span></h3>
+              <ul class="log__bullets">
+                <li>Led gameplay mechanics for a health-literacy game in Unity in a four-person team.</li>
+                <li>Collaborated with designers on gameplay teaching players about antibiotic misuse.</li>
+              </ul>
+              <div class="log__tags"><span>Unity</span><span>C#</span><span>Team</span></div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="skills">
+          <header class="skills__head">
+            <div class="sect__num">—</div>
+            <div class="sect__titleblock">
+              <h2 class="sect__title">Toolbelt</h2>
+              <p class="sect__sub">$ cat ~/.config/skills.toml</p>
+            </div>
+          </header>
+          <div class="skills__grid">
+            <div class="skill">
+              <div class="skill__label"><span class="skill__bracket">[</span>languages<span class="skill__bracket">]</span></div>
+              <div class="skill__items">
+                <span>Python</span><span>C#</span><span>Java</span><span>C</span><span>SQL</span>
+              </div>
+            </div>
+            <div class="skill">
+              <div class="skill__label"><span class="skill__bracket">[</span>frameworks<span class="skill__bracket">]</span></div>
+              <div class="skill__items">
+                <span>PyTorch</span><span>scikit-learn</span><span>LangGraph</span><span>LangChain</span><span>OpenAI</span>
+              </div>
+            </div>
+            <div class="skill">
+              <div class="skill__label"><span class="skill__bracket">[</span>platforms<span class="skill__bracket">]</span></div>
+              <div class="skill__items">
+                <span>Docker</span><span>AWS</span><span>Unity</span>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
 
-    <footer class="statusbar" aria-hidden="true">
-      <div class="statusbar__seg statusbar__seg--mode">
-        <span class="statusbar__mode">NORMAL</span>
-        <span class="statusbar__file" id="statusbar-file">~/about.md</span>
       </div>
-      <div class="statusbar__seg statusbar__seg--center">
-        <span class="statusbar__hint"><kbd>←</kbd> prev</span>
-        <span class="statusbar__hint">next <kbd>→</kbd></span>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section class="view" id="view-projects" data-screen-label="03 Projects">
+      <div class="stage stage--scroll">
+
+        <header class="sect__head">
+          <div class="sect__num">03</div>
+          <div class="sect__titleblock">
+            <h2 class="sect__title">Projects</h2>
+            <p class="sect__sub">$ ls -la ~/projects/</p>
+          </div>
+          <div class="sect__rule"></div>
+          <div class="sect__count">2 projects</div>
+        </header>
+
+        <div class="projects">
+
+          <article class="project" data-expanded="false">
+            <button class="project__row" aria-expanded="false">
+              <span class="project__chev">›</span>
+              <span class="project__idx">001</span>
+              <span class="project__name">event-management-system</span>
+              <span class="project__stack">
+                <span>AWS</span><span>PHP</span><span>MySQL</span>
+              </span>
+              <span class="project__year">2024</span>
+            </button>
+            <div class="project__panel">
+              <div class="project__panelinner">
+                <div class="project__desc">
+                  Cloud-based event management system deployed on AWS EC2 &amp; RDS with Auto Scaling,
+                  Load Balancer, IAM, and VPC for high availability and security.
+                </div>
+                <div class="project__grid">
+                  <div class="project__kv"><span>role</span><span>full-stack · infra</span></div>
+                  <div class="project__kv"><span>region</span><span>ap-southeast-1</span></div>
+                  <div class="project__kv"><span>status</span><span>archived</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project" data-expanded="true">
+            <button class="project__row" aria-expanded="true">
+              <span class="project__chev">›</span>
+              <span class="project__idx">002</span>
+              <span class="project__name">agent-deployer</span>
+              <span class="project__stack">
+                <span>Python</span><span>FastAPI</span><span>Gemini</span><span>Cloud Run</span>
+              </span>
+              <span class="project__year">2025</span>
+            </button>
+            <div class="project__panel">
+              <div class="project__panelinner">
+                <div class="project__desc">
+                  AI-powered deployment tool pairing a Python (FastAPI) backend with a VS Code extension.
+                  Uses Gemini with agentic tools to iteratively explore a project, generate a Dockerfile,
+                  build the image, and deploy it to Google Cloud Run via Artifact Registry — end-to-end
+                  with OAuth auth and runtime env-var support.
+                </div>
+                <div class="project__grid">
+                  <div class="project__kv"><span>role</span><span>agent design · backend · ext</span></div>
+                  <div class="project__kv"><span>stack</span><span>Python · TS · Docker</span></div>
+                  <div class="project__kv"><span>status</span><span>shipped</span></div>
+                </div>
+                <div class="project__links">
+                  <a href="https://github.com/mefetsi/hackathon-project-deployer" target="_blank" rel="noopener">
+                    <span class="project__linkbr">[</span>source<span class="project__linkbr">]</span>
+                    <span class="project__linkarrow">↗</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <footer class="credits">
+          <div class="credits__left">
+            <span>Timothy Zoe Delaya</span>
+            <span class="credits__dot">·</span>
+            <span>Singapore</span>
+            <span class="credits__dot">·</span>
+            <span>2026</span>
+          </div>
+        </footer>
+
       </div>
-      <div class="statusbar__seg statusbar__seg--right">
-        <span class="statusbar__live"><span class="statusbar__dot"></span>online</span>
-        <span class="statusbar__sep">·</span>
-        <span class="statusbar__enc">utf-8</span>
-        <span class="statusbar__sep">·</span>
-        <span class="statusbar__time" id="statusbar-time">--:--</span>
-      </div>
-    </footer>
-  </body>
+    </section>
+
+  </main>
+
+  <!-- STATUS BAR -->
+  <footer class="statusbar">
+    <div class="statusbar__left">
+      <span class="statusbar__mode">NORMAL</span>
+      <span class="statusbar__file" id="statusbar-file">~/about.md</span>
+    </div>
+    <div class="statusbar__center">
+      <span class="statusbar__hint"><kbd>←</kbd><kbd>→</kbd> nav</span>
+      <span class="statusbar__sep">·</span>
+      <span class="statusbar__hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> jump</span>
+    </div>
+    <div class="statusbar__right">
+      <span class="statusbar__git">main</span>
+      <span class="statusbar__sep">·</span>
+      <span class="statusbar__enc">utf-8</span>
+      <span class="statusbar__sep">·</span>
+      <span class="statusbar__time" id="statusbar-time">--:--</span>
+    </div>
+  </footer>
+
+</div>
+
+</body>
 </html>
