@@ -142,6 +142,110 @@
   });
 
   /* =============================================================
+     COMMAND PALETTE
+  ============================================================= */
+  const palette = document.getElementById('palette');
+  const paletteInput = document.getElementById('palette-input');
+  const paletteList = document.getElementById('palette-list');
+  const paletteOpenBtn = document.getElementById('palette-open');
+
+  const PALETTE_ITEMS = [
+    { id: 'go-home',     icon: '①',   name: 'go to home',          hint: '1',     action: () => switchView('home') },
+    { id: 'go-work',     icon: '②',   name: 'go to work log',      hint: '2',     action: () => switchView('work') },
+    { id: 'go-projects', icon: '③',   name: 'go to projects',      hint: '3',     action: () => switchView('projects') },
+    { id: 'email',       icon: '✉',   name: 'send email',          hint: '↗',    action: () => { location.href = 'mailto:delayatimothy@gmail.com'; } },
+    { id: 'github',      icon: '★',   name: 'open github',         hint: '↗',    action: () => window.open('https://github.com/txxzd', '_blank') },
+    { id: 'linkedin',    icon: 'in',  name: 'open linkedin',       hint: '↗',    action: () => window.open('https://linkedin.com/in/timothydelaya', '_blank') },
+    { id: 'source',      icon: '</>', name: 'view portfolio source', hint: '↗',  action: () => window.open('https://github.com/txxzd/txxzd.github.io', '_blank') },
+    { id: 'theme-main',  icon: '◆',   name: 'switch theme: terminal (default)', hint: 'theme', action: () => { location.href = '../'; } },
+  ];
+
+  let paletteActive = 0;
+
+  function renderPalette(filter) {
+    if (!paletteList) return [];
+    const q = (filter || '').toLowerCase().trim();
+    const items = PALETTE_ITEMS.filter(it => !q || it.name.toLowerCase().includes(q));
+    paletteList.innerHTML = items.map((it, i) => (
+      '<li class="palette__item ' + (i === paletteActive ? 'is-active' : '') + '" data-id="' + it.id + '">' +
+        '<span class="palette__item-icon">' + it.icon + '</span>' +
+        '<span class="palette__item-name">' + it.name + '</span>' +
+        '<span class="palette__item-hint">' + it.hint + '</span>' +
+      '</li>'
+    )).join('');
+    paletteList.querySelectorAll('.palette__item').forEach((el, i) => {
+      el.addEventListener('click', () => runPaletteItem(items[i]));
+      el.addEventListener('mouseenter', () => {
+        paletteActive = i;
+        paletteList.querySelectorAll('.palette__item').forEach((x, j) => x.classList.toggle('is-active', j === i));
+      });
+    });
+    return items;
+  }
+
+  function runPaletteItem(it) {
+    if (!it) return;
+    closePalette();
+    it.action();
+  }
+
+  function openPalette() {
+    if (!palette) return;
+    palette.classList.add('is-open');
+    paletteActive = 0;
+    renderPalette('');
+    if (paletteInput) {
+      paletteInput.value = '';
+      setTimeout(() => paletteInput.focus(), 30);
+    }
+  }
+  function closePalette() {
+    if (!palette) return;
+    palette.classList.remove('is-open');
+  }
+
+  if (paletteOpenBtn) paletteOpenBtn.addEventListener('click', openPalette);
+
+  document.addEventListener('keydown', (e) => {
+    const isMod = e.metaKey || e.ctrlKey;
+    if (isMod && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (palette && palette.classList.contains('is-open')) closePalette();
+      else openPalette();
+    } else if (e.key === 'Escape' && palette && palette.classList.contains('is-open')) {
+      closePalette();
+    }
+  });
+
+  if (paletteInput) {
+    paletteInput.addEventListener('input', () => {
+      paletteActive = 0;
+      renderPalette(paletteInput.value);
+    });
+    paletteInput.addEventListener('keydown', (e) => {
+      const items = renderPalette(paletteInput.value);
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        paletteActive = (paletteActive + 1) % items.length;
+        renderPalette(paletteInput.value);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        paletteActive = (paletteActive - 1 + items.length) % items.length;
+        renderPalette(paletteInput.value);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        runPaletteItem(items[paletteActive]);
+      }
+    });
+  }
+
+  if (palette) {
+    palette.addEventListener('click', (e) => {
+      if (e.target === palette) closePalette();
+    });
+  }
+
+  /* =============================================================
      STATUSBAR CLOCK
   ============================================================= */
   const timeEl = document.getElementById('statusbar-time');
