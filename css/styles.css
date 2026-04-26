@@ -349,25 +349,24 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   transition: color 0.2s var(--ease), background 0.2s var(--ease);
 }
 .tab:hover { color: var(--fg); background: rgba(255,255,255,0.03); }
-.tab__num {
+.tab__ico {
   display: inline-grid; place-items: center;
   width: 18px; height: 18px;
-  border-radius: 4px;
-  font-size: 10px;
-  background: rgba(255,255,255,0.05);
+  font-size: 13px;
   color: var(--fg-dim);
+  transition: color 0.2s var(--ease);
 }
 .tab--active {
   color: var(--fg);
-  background: rgba(127, 219, 202, 0.10);
-  box-shadow: inset 0 0 0 1px rgba(127, 219, 202, 0.30);
 }
-.tab--active .tab__num { background: var(--cyan); color: var(--bg); }
+.tab--active .tab__ico { color: var(--cyan); }
 .tab--active::after {
   content: "";
-  position: absolute; left: 10px; right: 10px; bottom: 1px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  position: absolute; left: 6px; right: 6px; bottom: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--cyan);
+  box-shadow: 0 0 6px rgba(127, 219, 202, 0.6), 0 0 14px rgba(127, 219, 202, 0.3);
 }
 
 .tmux__right {
@@ -1591,7 +1590,7 @@ body.boot-done .hero__caret-end {
   }
   .tmux__session { padding-right: 10px; flex: 0 0 auto; }
   .tmux__right    { flex: 0 0 auto; margin-left: auto; gap: 6px; }
-  .tmux__cmdk     { display: none; }
+  .tmux__cmdk     { padding: 4px 7px; font-size: 10px; }
   .tmux__tabs {
     order: 3;
     flex: 1 0 100%;
@@ -1600,7 +1599,6 @@ body.boot-done .hero__caret-end {
     padding-top: 6px;
     border-top: 1px solid var(--pane-edge);
   }
-  .tab__num { display: none; }
   .tab      { padding: 5px 10px; }
 }
 
@@ -1624,7 +1622,7 @@ body.boot-done .hero__caret-end {
   .tmux__session { padding-right: 8px; flex: 0 0 auto; }
   .tmux__tabs { order: 3; flex: 1 0 100%; justify-content: flex-start; gap: 4px; }
   .tmux__right { flex: 0 0 auto; margin-left: auto; }
-  .tmux__cmdk { display: none; }
+  .tmux__cmdk { padding: 4px 7px; font-size: 10px; }
   .tab { padding: 4px 10px; }
   .grid--home {
     grid-template-columns: 1fr;
