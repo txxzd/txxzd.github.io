@@ -150,11 +150,11 @@
   const paletteOpenBtn = document.getElementById('palette-open');
 
   const PALETTE_ITEMS = [
-    { id: 'go-home',     icon: '①',   name: 'go to home',          hint: '1',     action: () => switchView('home') },
-    { id: 'go-work',     icon: '②',   name: 'go to work log',      hint: '2',     action: () => switchView('work') },
-    { id: 'go-projects', icon: '③',   name: 'go to projects',      hint: '3',     action: () => switchView('projects') },
+    { id: 'go-home',     icon: '⬡',   name: 'go to home',          hint: '1',     action: () => switchView('home') },
+    { id: 'go-work',     icon: '⏣',   name: 'go to work log',      hint: '2',     action: () => switchView('work') },
+    { id: 'go-projects', icon: '◈',   name: 'go to projects',      hint: '3',     action: () => switchView('projects') },
     { id: 'email',       icon: '✉',   name: 'send email',          hint: '↗',    action: () => { location.href = 'mailto:delayatimothy@gmail.com'; } },
-    { id: 'github',      icon: '★',   name: 'open github',         hint: '↗',    action: () => window.open('https://github.com/txxzd', '_blank') },
+    { id: 'github',      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="display:block"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>',   name: 'open github',         hint: '↗',    action: () => window.open('https://github.com/txxzd', '_blank') },
     { id: 'linkedin',    icon: 'in',  name: 'open linkedin',       hint: '↗',    action: () => window.open('https://linkedin.com/in/timothydelaya', '_blank') },
     { id: 'source',      icon: '</>', name: 'view portfolio source', hint: '↗',  action: () => window.open('https://github.com/txxzd/txxzd.github.io', '_blank') },
     { id: 'theme-main',  icon: '◆',   name: 'switch theme: terminal (default)', hint: 'theme', action: () => { location.href = '../'; } },
