@@ -949,6 +949,7 @@ a { color: inherit; }
   transition: background 100ms var(--ease);
 }
 .palette__item-icon { color: var(--accent); }
+.palette__item-icon svg { display: block; }
 .palette__item:hover,
 .palette__item.is-active { background: var(--accent-soft); }
 .palette__item.is-active { box-shadow: inset 0 0 0 1px var(--accent-glow); }

@@ -7,6 +7,11 @@ const FILES = {
   work: "~/experience/log",
   projects: "~/projects/",
 };
+const STATUS_MODES = {
+  home:     ["NORMAL",  "var(--cyan)"],
+  work:     ["VISUAL",  "var(--mauve)"],
+  projects: ["INSERT",  "var(--green)"],
+};
 
 let currentView = "home";
 
@@ -104,8 +109,7 @@ function setView(name) {
   tabs.forEach((t) => t.classList.toggle("tab--active", t.dataset.view === name));
   if (statusFile) statusFile.textContent = FILES[name];
   if (statusMode) {
-    const map = { home: ["NORMAL", "var(--cyan)"], work: ["VISUAL", "var(--mauve)"], projects: ["INSERT", "var(--green)"] };
-    const [text, color] = map[name];
+    const [text, color] = STATUS_MODES[name];
     statusMode.textContent = text;
     statusMode.style.background = color;
   }
@@ -134,7 +138,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// initial hash-based routing
 const initial = (location.hash || "").replace("#", "");
 if (VIEWS.includes(initial)) setView(initial);
 
@@ -165,18 +168,19 @@ const PALETTE_ITEMS = [
   { id: "go-work",     icon: "⏣", name: "go to work log",     hint: "2",   action: () => setView("work") },
   { id: "go-projects", icon: "◈", name: "go to projects",     hint: "3",   action: () => setView("projects") },
   { id: "email",       icon: "✉", name: "send email",          hint: "↗", action: () => location.href = "mailto:delayatimothy@gmail.com" },
-  { id: "github",      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="display:block"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>', name: "open github",         hint: "↗", action: () => window.open("https://github.com/txxzd", "_blank") },
+  { id: "github",      icon: ICONS.github,                                                                   name: "open github",         hint: "↗", action: () => window.open("https://github.com/txxzd", "_blank") },
   { id: "linkedin",    icon: "in", name: "open linkedin",      hint: "↗", action: () => window.open("https://linkedin.com/in/timothydelaya", "_blank") },
   { id: "source",      icon: "</>", name: "view portfolio source", hint: "↗", action: () => window.open("https://github.com/txxzd/txxzd.github.io", "_blank") },
   { id: "theme-paper", icon: "◇", name: "switch theme: paper", hint: "theme", action: () => { location.href = "paper/"; } },
 ];
 
 let paletteActive = 0;
+let paletteItems = [];
 
 function renderPalette(filter = "") {
   const q = filter.toLowerCase().trim();
-  const items = PALETTE_ITEMS.filter((it) => !q || it.name.toLowerCase().includes(q));
-  paletteList.innerHTML = items
+  paletteItems = PALETTE_ITEMS.filter((it) => !q || it.name.toLowerCase().includes(q));
+  paletteList.innerHTML = paletteItems
     .map((it, i) => `
       <li class="palette__item ${i === paletteActive ? "is-active" : ""}" data-id="${it.id}">
         <span class="c-cyan">${it.icon}</span>
@@ -185,16 +189,19 @@ function renderPalette(filter = "") {
       </li>`)
     .join("");
   paletteList.querySelectorAll(".palette__item").forEach((el, i) => {
-    el.addEventListener("click", () => {
-      const item = items[i];
-      runPaletteItem(item);
-    });
+    el.addEventListener("click", () => runPaletteItem(paletteItems[i]));
     el.addEventListener("mouseenter", () => {
+      paletteList.querySelector(".palette__item.is-active")?.classList.remove("is-active");
       paletteActive = i;
-      paletteList.querySelectorAll(".palette__item").forEach((x, j) => x.classList.toggle("is-active", j === i));
+      el.classList.add("is-active");
     });
   });
-  return items;
+}
+
+function updatePaletteActive() {
+  paletteList.querySelectorAll(".palette__item").forEach((el, i) => {
+    el.classList.toggle("is-active", i === paletteActive);
+  });
 }
 
 function runPaletteItem(it) {
@@ -233,18 +240,17 @@ paletteInput.addEventListener("input", () => {
 });
 
 paletteInput.addEventListener("keydown", (e) => {
-  const items = renderPalette(paletteInput.value);
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    paletteActive = (paletteActive + 1) % items.length;
-    renderPalette(paletteInput.value);
+    paletteActive = (paletteActive + 1) % paletteItems.length;
+    updatePaletteActive();
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    paletteActive = (paletteActive - 1 + items.length) % items.length;
-    renderPalette(paletteInput.value);
+    paletteActive = (paletteActive - 1 + paletteItems.length) % paletteItems.length;
+    updatePaletteActive();
   } else if (e.key === "Enter") {
     e.preventDefault();
-    runPaletteItem(items[paletteActive]);
+    runPaletteItem(paletteItems[paletteActive]);
   }
 });
 
@@ -315,7 +321,6 @@ function renderFallback() {
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
   camera.position.set(0, 0, 5.5);
 
-  // group to hold both objects
   const group = new THREE.Group();
   scene.add(group);
 
@@ -365,42 +370,39 @@ function renderFallback() {
   );
   scene.add(particles);
 
-  // Three.js resize — check host size every animation frame.
   // CSS forces canvas display to 100% of host (`width: 100% !important`),
-  // so we ONLY need to update the drawing buffer here. setSize(_, _, false)
+  // so we ONLY need to update the drawing buffer. setSize(_, _, false)
   // skips touching inline styles, avoiding any conflict with the CSS.
-  // Cached lastW/H + zero-size guard for cheapness.
-  let lastW = -1, lastH = -1;
-  function ensureSize() {
-    const rect = host.getBoundingClientRect();
-    const w = Math.max(0, Math.round(rect.width));
-    const h = Math.max(0, Math.round(rect.height));
-    if (w < 2 || h < 2) return;          // host not laid out yet — wait
-    if (w === lastW && h === lastH) return;
-    lastW = w; lastH = h;
+  let hostRect = host.getBoundingClientRect();
+  {
+    const w = Math.round(hostRect.width), h = Math.round(hostRect.height);
+    if (w >= 2 && h >= 2) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+  }
+  const ro = new ResizeObserver((entries) => {
+    const { width, height } = entries[0].contentRect;
+    const w = Math.round(width), h = Math.round(height);
+    if (w < 2 || h < 2) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-  }
-  ensureSize();
+    hostRect = host.getBoundingClientRect();
+  });
+  ro.observe(host);
 
   // mouse parallax
   let mx = 0, my = 0;
   let tx = 0, ty = 0;
   host.addEventListener("mousemove", (e) => {
-    const rect = host.getBoundingClientRect();
-    tx = ((e.clientX - rect.left) / rect.width - 0.5) * 0.8;
-    ty = ((e.clientY - rect.top) / rect.height - 0.5) * 0.8;
+    tx = ((e.clientX - hostRect.left) / hostRect.width - 0.5) * 0.8;
+    ty = ((e.clientY - hostRect.top) / hostRect.height - 0.5) * 0.8;
   });
   host.addEventListener("mouseleave", () => { tx = 0; ty = 0; });
 
-  // animation loop
   let last = performance.now();
   let frames = 0;
   let fpsLast = last;
   function animate(t) {
     requestAnimationFrame(animate);
-    ensureSize();  // resize check happens every frame — reliable across browsers
     const dt = (t - last) / 1000;
     last = t;
 
