@@ -95,17 +95,14 @@ function startTypewriter() {
 }
 
 /* =============================================================
-   VIEW SWITCHING
+   SCROLL-BASED NAVIGATION
 ============================================================= */
 const tabs = document.querySelectorAll(".tab");
-const views = document.querySelectorAll(".view");
 const statusFile = document.getElementById("status-file");
 const statusMode = document.getElementById("status-mode");
+const mainEl = document.querySelector(".main");
 
-function setView(name) {
-  if (!VIEWS.includes(name) || name === currentView) return;
-  currentView = name;
-  views.forEach((v) => v.classList.toggle("view--active", v.id === `view-${name}`));
+function syncUI(name) {
   tabs.forEach((t) => t.classList.toggle("tab--active", t.dataset.view === name));
   if (statusFile) statusFile.textContent = FILES[name];
   if (statusMode) {
@@ -113,33 +110,83 @@ function setView(name) {
     statusMode.textContent = text;
     statusMode.style.background = color;
   }
+}
+
+function setActiveSection(name) {
+  if (!VIEWS.includes(name) || name === currentView) return;
+  currentView = name;
+  syncUI(name);
   history.replaceState(null, "", `#${name}`);
+}
+
+let progScrolling = false;
+let progScrollTimer = null;
+
+function scrollToSection(name) {
+  const el = document.getElementById(name);
+  if (!el) return;
+  progScrolling = true;
+  el.scrollIntoView({ behavior: "smooth" });
 }
 
 tabs.forEach((t) => {
   t.addEventListener("click", (e) => {
     e.preventDefault();
-    setView(t.dataset.view);
+    const name = t.dataset.view;
+    scrollToSection(name);
+    setActiveSection(name);
   });
 });
 
 document.addEventListener("keydown", (e) => {
   if (e.target.tagName === "INPUT") return;
   if (e.metaKey || e.ctrlKey) return;
-  if (e.key === "1") setView("home");
-  else if (e.key === "2") setView("work");
-  else if (e.key === "3") setView("projects");
+  if (e.key === "1") { scrollToSection("home");     setActiveSection("home"); }
+  else if (e.key === "2") { scrollToSection("work");     setActiveSection("work"); }
+  else if (e.key === "3") { scrollToSection("projects"); setActiveSection("projects"); }
   else if (e.key === "ArrowRight") {
-    const i = VIEWS.indexOf(currentView);
-    setView(VIEWS[(i + 1) % VIEWS.length]);
+    const next = VIEWS[(VIEWS.indexOf(currentView) + 1) % VIEWS.length];
+    scrollToSection(next); setActiveSection(next);
   } else if (e.key === "ArrowLeft") {
-    const i = VIEWS.indexOf(currentView);
-    setView(VIEWS[(i - 1 + VIEWS.length) % VIEWS.length]);
+    const prev = VIEWS[(VIEWS.indexOf(currentView) - 1 + VIEWS.length) % VIEWS.length];
+    scrollToSection(prev); setActiveSection(prev);
   }
 });
 
+// Scroll-spy: suppressed during programmatic scrolls to prevent flickering
+if (mainEl) {
+  function updateScrollSpy() {
+    const scrollTop = mainEl.scrollTop;
+    const threshold = mainEl.clientHeight * 0.4;
+    let active = VIEWS[0];
+    for (const name of VIEWS) {
+      const el = document.getElementById(name);
+      if (el && el.offsetTop <= scrollTop + threshold) active = name;
+    }
+    setActiveSection(active);
+  }
+
+  mainEl.addEventListener("scroll", () => {
+    clearTimeout(progScrollTimer);
+    if (progScrolling) {
+      // wait for scroll to settle, then sync once
+      progScrollTimer = setTimeout(() => {
+        progScrolling = false;
+        updateScrollSpy();
+      }, 150);
+      return;
+    }
+    updateScrollSpy();
+  }, { passive: true });
+}
+
+// Initial state
 const initial = (location.hash || "").replace("#", "");
-if (VIEWS.includes(initial)) setView(initial);
+if (VIEWS.includes(initial)) {
+  setTimeout(() => scrollToSection(initial), 50);
+  currentView = initial;
+}
+syncUI(currentView);
 
 /* =============================================================
    PROJECTS — collapsible
@@ -164,9 +211,9 @@ const paletteList = document.getElementById("palette-list");
 const paletteOpen = document.getElementById("palette-open");
 
 const PALETTE_ITEMS = [
-  { id: "go-home",     icon: "⬡", name: "go to home",         hint: "1",   action: () => setView("home") },
-  { id: "go-work",     icon: "⏣", name: "go to work log",     hint: "2",   action: () => setView("work") },
-  { id: "go-projects", icon: "◈", name: "go to projects",     hint: "3",   action: () => setView("projects") },
+  { id: "go-home",     icon: "~", name: "go to home",         hint: "1",   action: () => { scrollToSection("home");     setActiveSection("home"); } },
+  { id: "go-work",     icon: "~", name: "go to work log",     hint: "2",   action: () => { scrollToSection("work");     setActiveSection("work"); } },
+  { id: "go-projects", icon: "~", name: "go to projects",     hint: "3",   action: () => { scrollToSection("projects"); setActiveSection("projects"); } },
   { id: "email",       icon: "✉", name: "send email",          hint: "↗", action: () => location.href = "mailto:delayatimothy@gmail.com" },
   { id: "github",      icon: ICONS.github,                                                                   name: "open github",         hint: "↗", action: () => window.open("https://github.com/txxzd", "_blank") },
   { id: "linkedin",    icon: "in", name: "open linkedin",      hint: "↗", action: () => window.open("https://linkedin.com/in/timothydelaya", "_blank") },

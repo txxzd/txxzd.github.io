@@ -143,9 +143,9 @@
   const paletteOpenBtn = document.getElementById('palette-open');
 
   const PALETTE_ITEMS = [
-    { id: 'go-home',     icon: '⬡',   name: 'go to home',          hint: '1',     action: () => switchView('home') },
-    { id: 'go-work',     icon: '⏣',   name: 'go to work log',      hint: '2',     action: () => switchView('work') },
-    { id: 'go-projects', icon: '◈',   name: 'go to projects',      hint: '3',     action: () => switchView('projects') },
+    { id: 'go-home',     icon: '~',   name: 'go to home',          hint: '1',     action: () => switchView('home') },
+    { id: 'go-work',     icon: '~',   name: 'go to work log',      hint: '2',     action: () => switchView('work') },
+    { id: 'go-projects', icon: '~',   name: 'go to projects',      hint: '3',     action: () => switchView('projects') },
     { id: 'email',       icon: '✉',   name: 'send email',          hint: '↗',    action: () => { location.href = 'mailto:delayatimothy@gmail.com'; } },
     { id: 'github',      icon: ICONS.github,                                                                       name: 'open github',         hint: '↗',    action: () => window.open('https://github.com/txxzd', '_blank') },
     { id: 'linkedin',    icon: 'in',  name: 'open linkedin',       hint: '↗',    action: () => window.open('https://linkedin.com/in/timothydelaya', '_blank') },
