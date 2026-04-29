@@ -8,49 +8,12 @@ const FILES = {
   projects: "~/projects/",
 };
 const STATUS_MODES = {
-  home:     ["NORMAL",  "var(--cyan)"],
-  work:     ["VISUAL",  "var(--mauve)"],
-  projects: ["INSERT",  "var(--green)"],
+  home:     ["HOME",     "var(--cyan)"],
+  work:     ["WORK",     "var(--mauve)"],
+  projects: ["PROJECTS", "var(--green)"],
 };
 
 let currentView = "home";
-
-/* =============================================================
-   NEOFETCH ASCII — paint into the logo pre on load
-============================================================= */
-(function paintAscii() {
-  const el = document.getElementById("neo-logo");
-  if (!el) return;
-  const art = window.NEOFETCH_ASCII;
-  el.textContent = art && art.length
-    ? art
-    : "   ╱╲\n  ╱  ╲\n ╱ ▲▲ ╲\n╱  ╲╱  ╲\n╲  ╱╲  ╱\n ╲ ▼▼ ╱\n  ╲  ╱\n   ╲╱";
-})();
-
-/* =============================================================
-   BOOT — handled inline in index.html so it always runs,
-   even if module loading fails. Here we only kick off the
-   typewriter once the boot overlay has been dismissed.
-============================================================= */
-const bootEl = document.getElementById("boot");
-
-function whenBootDone(cb) {
-  let fired = false;
-  const fire = () => { if (!fired) { fired = true; cb(); } };
-  if (!bootEl) return fire();
-  if (bootEl.classList.contains("is-done")) return fire();
-  const obs = new MutationObserver(() => {
-    if (bootEl.classList.contains("is-done")) {
-      obs.disconnect();
-      setTimeout(fire, 250);
-    }
-  });
-  obs.observe(bootEl, { attributes: true, attributeFilter: ["class"] });
-  // safety net in case observer never fires
-  setTimeout(fire, 6000);
-}
-
-whenBootDone(() => startTypewriter());
 
 /* =============================================================
    TYPEWRITER (hero prompt)
@@ -98,6 +61,7 @@ function startTypewriter() {
    SCROLL-BASED NAVIGATION
 ============================================================= */
 const tabs = document.querySelectorAll(".tab");
+const tabsContainer = document.querySelector(".tmux__tabs");
 const statusFile = document.getElementById("status-file");
 const statusMode = document.getElementById("status-mode");
 const mainEl = document.querySelector(".main");
@@ -109,6 +73,11 @@ function syncUI(name) {
     const [text, color] = STATUS_MODES[name];
     statusMode.textContent = text;
     statusMode.style.background = color;
+  }
+  const active = document.querySelector(`.tab[data-view="${name}"]`);
+  if (active && tabsContainer) {
+    tabsContainer.style.setProperty("--underline-x", active.offsetLeft + "px");
+    tabsContainer.style.setProperty("--underline-w", active.offsetWidth + "px");
   }
 }
 
@@ -187,20 +156,35 @@ if (VIEWS.includes(initial)) {
   currentView = initial;
 }
 syncUI(currentView);
+window.addEventListener("resize", () => syncUI(currentView));
+startTypewriter();
 
 /* =============================================================
-   PROJECTS — collapsible
+   ENTRY REVEAL — fade-up each exp__entry and proj as it
+   scrolls into view, with a per-item stagger delay.
 ============================================================= */
-document.querySelectorAll(".project__row").forEach((row) => {
-  row.addEventListener("click", () => {
-    const card = row.closest(".project");
-    const open = card.dataset.expanded === "true";
-    card.dataset.expanded = String(!open);
-    row.setAttribute("aria-expanded", String(!open));
-    const chev = row.querySelector(".project__chev");
-    if (chev) chev.textContent = !open ? "▾" : "▸";
+(function initReveal() {
+  const items = document.querySelectorAll(".exp__entry, .proj");
+  items.forEach((el, i) => {
+    // stagger resets per parent section
+    const siblings = el.parentElement.querySelectorAll(el.classList.contains("exp__entry") ? ".exp__entry" : ".proj");
+    let idx = 0;
+    siblings.forEach((s, si) => { if (s === el) idx = si; });
+    el.style.setProperty("--i", idx);
   });
-});
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { root: mainEl, rootMargin: "0px 0px -60px 0px", threshold: 0.08 });
+
+  items.forEach((el) => observer.observe(el));
+})();
+
 
 /* =============================================================
    COMMAND PALETTE
@@ -218,7 +202,6 @@ const PALETTE_ITEMS = [
   { id: "github",      icon: ICONS.github,                                                                   name: "open github",         hint: "↗", action: () => window.open("https://github.com/txxzd", "_blank") },
   { id: "linkedin",    icon: "in", name: "open linkedin",      hint: "↗", action: () => window.open("https://linkedin.com/in/timothydelaya", "_blank") },
   { id: "source",      icon: "</>", name: "view portfolio source", hint: "↗", action: () => window.open("https://github.com/txxzd/txxzd.github.io", "_blank") },
-  { id: "theme-paper", icon: "◇", name: "switch theme: paper", hint: "theme", action: () => { location.href = "paper/"; } },
 ];
 
 let paletteActive = 0;
@@ -317,168 +300,7 @@ function tickClock() {
 tickClock();
 setInterval(tickClock, 1000);
 
-/* =============================================================
-   THREE.JS — wireframe icosahedron with edge glow
-   (loaded as a global via <script> tag; falls back if missing)
-============================================================= */
-const canvas = document.getElementById("three-canvas");
-const host = document.getElementById("three-host");
-const fpsEl = document.getElementById("three-fps");
 
-function renderFallback() {
-  if (!host) return;
-  host.innerHTML = '<pre style="margin:0;padding:24px;color:var(--fg-soft);font-size:11px;line-height:1.4">' +
-    '       △        \n' +
-    '      ╱ ╲       \n' +
-    '     ╱   ╲      \n' +
-    '    ╱  ◆  ╲     \n' +
-    '   ╱       ╲    \n' +
-    '  ╱_________╲   \n' +
-    '  ╲    ◆    ╱   \n' +
-    '   ╲       ╱    \n' +
-    '    ╲     ╱     \n' +
-    '     ╲   ╱      \n' +
-    '      ╲ ╱       \n' +
-    '       ▽        \n' +
-    '</pre>';
-  if (fpsEl) fpsEl.textContent = "offline";
-}
-
-(function initThree() {
-  if (!canvas || !host) return;
-  const THREE = window.THREE;
-  if (!THREE) {
-    // try again briefly in case the script is still loading
-    if ((initThree.tries = (initThree.tries || 0) + 1) < 30) {
-      return setTimeout(initThree, 100);
-    }
-    return renderFallback();
-  }
-
-  let renderer;
-  try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  } catch (e) {
-    console.warn("WebGL init failed", e);
-    return renderFallback();
-  }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-  camera.position.set(0, 0, 5.5);
-
-  const group = new THREE.Group();
-  scene.add(group);
-
-  // outer wireframe icosahedron
-  const ico = new THREE.IcosahedronGeometry(1.6, 1);
-  const wire = new THREE.LineSegments(
-    new THREE.WireframeGeometry(ico),
-    new THREE.LineBasicMaterial({ color: 0x7fdbca, transparent: true, opacity: 0.55 })
-  );
-  group.add(wire);
-
-  // inner pulsing solid (low opacity)
-  const inner = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.0, 0),
-    new THREE.MeshBasicMaterial({
-      color: 0xc4a7e7,
-      transparent: true,
-      opacity: 0.08,
-      wireframe: false,
-    })
-  );
-  group.add(inner);
-
-  // inner wireframe
-  const innerWire = new THREE.LineSegments(
-    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.0, 0)),
-    new THREE.LineBasicMaterial({ color: 0xf5a3c7, transparent: true, opacity: 0.7 })
-  );
-  group.add(innerWire);
-
-  // particles drifting around it
-  const particleCount = 80;
-  const particleGeom = new THREE.BufferGeometry();
-  const positions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount; i++) {
-    const r = 2.4 + Math.random() * 1.2;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-    positions[i * 3 + 2] = r * Math.cos(phi);
-  }
-  particleGeom.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  const particles = new THREE.Points(
-    particleGeom,
-    new THREE.PointsMaterial({ color: 0xf6c177, size: 0.04, transparent: true, opacity: 0.7 })
-  );
-  scene.add(particles);
-
-  // CSS forces canvas display to 100% of host (`width: 100% !important`),
-  // so we ONLY need to update the drawing buffer. setSize(_, _, false)
-  // skips touching inline styles, avoiding any conflict with the CSS.
-  let hostRect = host.getBoundingClientRect();
-  {
-    const w = Math.round(hostRect.width), h = Math.round(hostRect.height);
-    if (w >= 2 && h >= 2) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
-  }
-  const ro = new ResizeObserver((entries) => {
-    const { width, height } = entries[0].contentRect;
-    const w = Math.round(width), h = Math.round(height);
-    if (w < 2 || h < 2) return;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    hostRect = host.getBoundingClientRect();
-  });
-  ro.observe(host);
-
-  // mouse parallax
-  let mx = 0, my = 0;
-  let tx = 0, ty = 0;
-  host.addEventListener("mousemove", (e) => {
-    tx = ((e.clientX - hostRect.left) / hostRect.width - 0.5) * 0.8;
-    ty = ((e.clientY - hostRect.top) / hostRect.height - 0.5) * 0.8;
-  });
-  host.addEventListener("mouseleave", () => { tx = 0; ty = 0; });
-
-  let last = performance.now();
-  let frames = 0;
-  let fpsLast = last;
-  function animate(t) {
-    requestAnimationFrame(animate);
-    const dt = (t - last) / 1000;
-    last = t;
-
-    mx += (tx - mx) * 0.06;
-    my += (ty - my) * 0.06;
-
-    group.rotation.x += dt * 0.18 + my * 0.02;
-    group.rotation.y += dt * 0.24 + mx * 0.02;
-    innerWire.rotation.x -= dt * 0.4;
-    innerWire.rotation.z -= dt * 0.3;
-
-    const pulse = 1 + Math.sin(t * 0.002) * 0.04;
-    inner.scale.setScalar(pulse);
-
-    particles.rotation.y += dt * 0.05;
-    particles.rotation.x += dt * 0.02;
-
-    renderer.render(scene, camera);
-
-    frames++;
-    if (t - fpsLast >= 500) {
-      const fps = Math.round((frames * 1000) / (t - fpsLast));
-      if (fpsEl) fpsEl.textContent = String(fps);
-      frames = 0;
-      fpsLast = t;
-    }
-  }
-  requestAnimationFrame(animate);
-})();
 
 /* =============================================================
    HERO NAME — set per-char stagger index, append the trailing
@@ -499,7 +321,53 @@ function renderFallback() {
     lastRow.appendChild(caret);
   }
 
-  // Add boot-done class to <body> as soon as boot dismisses, which triggers
-  // the CSS typewriter. Uses the existing whenBootDone helper.
-  whenBootDone(() => document.body.classList.add("boot-done"));
+  document.body.classList.add("boot-done");
+})();
+
+/* =============================================================
+   TMUX SESSION TYPEWRITER — one-shot, ~400ms.
+============================================================= */
+(function tmuxSessionTypewriter() {
+  const name = document.querySelector(".tmux__name");
+  const sep  = document.querySelector(".tmux__sep");
+  const host = document.querySelector(".tmux__host");
+  if (!name || !sep || !host) return;
+  const parts = [[name, "timothyzd"], [sep, "·"], [host, "portfolio"]];
+  parts.forEach(([el]) => (el.textContent = ""));
+  let p = 0;
+  const typeNext = () => {
+    if (p >= parts.length) return;
+    const [el, text] = parts[p++];
+    let i = 0;
+    const tick = () => {
+      if (i >= text.length) return typeNext();
+      el.textContent += text[i++];
+      setTimeout(tick, 21);
+    };
+    tick();
+  };
+  typeNext();
+})();
+
+/* =============================================================
+   MAGNETIC HOVER — subtle pull toward cursor on key elements.
+============================================================= */
+(function magneticHover() {
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const touch   = matchMedia("(hover: none)").matches;
+  if (reduced || touch) return;
+  const els = document.querySelectorAll(".hero__link, .proj, .exp__entry");
+  els.forEach((el) => {
+    el.addEventListener("mousemove", (e) => {
+      const r = el.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+      const my = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+      el.style.transition = "transform 80ms ease-out";
+      el.style.transform  = `translate(${mx * 3}px, ${my * 3}px)`;
+    });
+    el.addEventListener("mouseleave", () => {
+      el.style.transition = "transform 200ms ease";
+      el.style.transform  = "";
+    });
+  });
 })();

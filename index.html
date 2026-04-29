@@ -12,30 +12,7 @@
 <body>
 
 <!-- ===== ANIMATED BACKGROUND ===== -->
-<div class="bg-orbs" aria-hidden="true">
-  <div class="orb orb-pink"></div>
-  <div class="orb orb-yellow"></div>
-</div>
-<div class="bg-cursor" aria-hidden="true">▊</div>
-
-<!-- ===== BOOT OVERLAY ===== -->
-<div id="boot" class="boot">
-  <div class="boot__inner">
-    <div class="boot__brand">
-      <span class="c-pink">▲</span>
-      <span class="c-cyan">▲</span>
-      <span class="c-yellow">▲</span>
-      <span class="boot__name">tzd-os</span>
-      <span class="boot__ver">v4.26.1</span>
-    </div>
-    <pre class="boot__log" id="boot-log"></pre>
-    <div class="boot__bar">
-      <div class="boot__barfill" id="boot-fill"></div>
-    </div>
-    <div class="boot__skip">press <kbd>esc</kbd> to skip</div>
-  </div>
-  <div class="scanlines"></div>
-</div>
+<div class="bg-orbs" aria-hidden="true"></div>
 
 <!-- ===== COMMAND PALETTE ===== -->
 <div id="palette" class="palette" aria-hidden="true">
@@ -64,6 +41,7 @@
       <a href="#home"     class="tab tab--active" data-view="home">home</a>
       <a href="#work"     class="tab"             data-view="work">work</a>
       <a href="#projects" class="tab"             data-view="projects">projects</a>
+      <span class="tab-underline" aria-hidden="true"></span>
     </nav>
     <div class="tmux__right">
       <button id="palette-open" class="tmux__cmdk" title="Open command palette">
@@ -84,100 +62,75 @@
   <main class="main">
 
     <!-- ============================================= -->
-    <!-- ============== HOME (DASHBOARD) ============== -->
+    <!-- =================== HOME ==================== -->
     <!-- ============================================= -->
     <section class="view" id="home">
       <div class="grid grid--home">
 
-        <!-- PANE: ABOUT.MD -->
-        <article class="pane pane--hero">
-          <header class="pane__head">
-            <span class="pane__dot c-red"></span>
-            <span class="pane__dot c-yellow"></span>
-            <span class="pane__dot c-green"></span>
-            <span class="pane__title">~/about.md</span>
-            <span class="pane__lang c-mauve">md</span>
-          </header>
-          <div class="pane__body hero">
-            <div class="hero__avail">
-              <span class="hero__pulse"></span>
-              <span>AVAILABLE · FULL-TIME</span>
-            </div>
-
-            <h1 class="hero__name" id="hero-name">
-              <span class="hero__row">
-                <span class="hero__char">T</span><span class="hero__char">i</span><span class="hero__char">m</span><span class="hero__char">o</span><span class="hero__char">t</span><span class="hero__char">h</span><span class="hero__char">y</span>
-              </span>
-              <span class="hero__row hero__row--last" data-row="last"><span class="hero__char">Z</span><span class="hero__char">o</span><span class="hero__char">e</span><span class="hero__space"></span><span class="hero__char">D</span><span class="hero__char">e</span><span class="hero__char">l</span><span class="hero__char">a</span><span class="hero__char">y</span><span class="hero__char">a</span></span>
-            </h1>
-
-            <p class="hero__role">
-              <span class="c-cyan">&gt;</span>
-              <span class="c-mauve">AI&nbsp;engineer</span>
-              <span class="c-dim">&amp;</span>
-              <span class="c-yellow">builder</span>
-              <span class="c-dim">·</span>
-              <span class="c-pink">Singapore</span>
-            </p>
-
-            <p class="hero__lead">
-              Applied AI student based in Singapore. I want to spend my career
-              building agents and training models — things that actually work, not just demos.
-            </p>
-
-            <div class="hero__meta">
-              <span class="hero__meta-item">
-                <span class="hero__meta-key">country</span>
-                <span class="hero__meta-val">Singapore</span>
-              </span>
-              <span class="hero__meta-item">
-                <span class="hero__meta-key">education</span>
-                <span class="hero__meta-val">SIT · Applied AI</span>
-              </span>
-              <span class="hero__meta-item">
-                <span class="hero__meta-key">focus</span>
-                <span class="hero__meta-val"><span class="c-mauve">agents</span> · <span class="c-mauve">ml</span> · <span class="c-mauve">vision</span></span>
-              </span>
-            </div>
-
-            <div class="hero__prompt">
-              <span class="c-green">timothy</span><span class="c-dim">@</span><span class="c-cyan">portfolio</span><span class="c-dim">:</span><span class="c-yellow">~</span><span class="c-pink">$</span>
-              <span id="prompt-cmd"></span><span class="caret">▊</span>
-            </div>
+        <div class="hero">
+          <div class="hero__avail">
+            <span class="hero__pulse"></span>
+            <span>AVAILABLE · FULL-TIME</span>
           </div>
-        </article>
 
+          <h1 class="hero__name" id="hero-name">
+            <span class="hero__row">
+              <span class="hero__char">T</span><span class="hero__char">i</span><span class="hero__char">m</span><span class="hero__char">o</span><span class="hero__char">t</span><span class="hero__char">h</span><span class="hero__char">y</span>
+            </span>
+            <span class="hero__row hero__row--last" data-row="last"><span class="hero__char">Z</span><span class="hero__char">o</span><span class="hero__char">e</span><span class="hero__space"></span><span class="hero__char">D</span><span class="hero__char">e</span><span class="hero__char">l</span><span class="hero__char">a</span><span class="hero__char">y</span><span class="hero__char">a</span></span>
+          </h1>
 
-        <!-- PANE: CONTACT -->
-        <article class="pane pane--contact">
-          <header class="pane__head">
-            <span class="pane__dot c-red"></span>
-            <span class="pane__dot c-yellow"></span>
-            <span class="pane__dot c-green"></span>
-            <span class="pane__title">./contact --all</span>
-            <span class="pane__lang c-yellow">exec</span>
-          </header>
-          <div class="pane__body contact">
-            <a href="mailto:delayatimothy@gmail.com" class="contact__row">
-              <span class="contact__arrow c-cyan">→</span>
-              <span class="contact__key">email</span>
-              <span class="contact__val">delayatimothy@gmail.com</span>
-              <span class="contact__hop">↗</span>
+          <p class="hero__sub">
+            <span class="c-cyan">AI engineer</span>
+            <span class="c-dim">·</span>
+            builder
+            <span class="c-dim">·</span>
+            Singapore
+          </p>
+
+          <p class="hero__lead">
+            Applied AI student based in Singapore. I want to spend my career
+            building agents and training models — things that actually work, not just demos.
+          </p>
+
+          <div class="hero__meta">
+            <span class="hero__meta-item">
+              <span class="hero__meta-key">country</span>
+              <span class="hero__meta-val">Singapore</span>
+            </span>
+            <span class="hero__meta-item">
+              <span class="hero__meta-key">education</span>
+              <span class="hero__meta-val">SIT · Applied AI</span>
+            </span>
+            <span class="hero__meta-item">
+              <span class="hero__meta-key">focus</span>
+              <span class="hero__meta-val"><span class="c-mauve">agents</span> · <span class="c-mauve">ml</span> · <span class="c-mauve">vision</span></span>
+            </span>
+          </div>
+
+          <div class="hero__links">
+            <a href="mailto:delayatimothy@gmail.com" class="hero__link">
+              <span class="hero__link-key">email</span>
+              <span class="hero__link-val">delayatimothy@gmail.com</span>
+              <span class="hero__link-arr">↗</span>
             </a>
-            <a href="https://github.com/txxzd" target="_blank" rel="noopener" class="contact__row">
-              <span class="contact__arrow c-mauve">→</span>
-              <span class="contact__key">github</span>
-              <span class="contact__val">@txxzd</span>
-              <span class="contact__hop">↗</span>
+            <a href="https://github.com/txxzd" target="_blank" rel="noopener" class="hero__link">
+              <span class="hero__link-key">github</span>
+              <span class="hero__link-val">@txxzd</span>
+              <span class="hero__link-arr">↗</span>
             </a>
-            <a href="https://linkedin.com/in/timothydelaya" target="_blank" rel="noopener" class="contact__row">
-              <span class="contact__arrow c-pink">→</span>
-              <span class="contact__key">linkedin</span>
-              <span class="contact__val">in/timothydelaya</span>
-              <span class="contact__hop">↗</span>
+            <a href="https://linkedin.com/in/timothydelaya" target="_blank" rel="noopener" class="hero__link">
+              <span class="hero__link-key">linkedin</span>
+              <span class="hero__link-val">in/timothydelaya</span>
+              <span class="hero__link-arr">↗</span>
             </a>
           </div>
-        </article>
+
+          <div class="hero__prompt">
+            <span class="c-green">timothy</span><span class="c-dim">@</span><span class="c-cyan">portfolio</span><span class="c-dim">:</span><span class="c-yellow">~</span><span class="c-pink">$</span>
+            <span id="prompt-cmd"></span><span class="caret">▊</span>
+          </div>
+        </div>
 
       </div>
     </section>
@@ -185,191 +138,130 @@
     <div class="section-sep" aria-hidden="true"></div>
 
     <!-- ============================================= -->
-    <!-- =============== WORK / GIT LOG =============== -->
+    <!-- =================== WORK ==================== -->
     <!-- ============================================= -->
     <section class="view" id="work">
       <div class="grid grid--work">
 
-        <article class="pane pane--worklog">
-          <header class="pane__head">
-            <span class="pane__dot c-red"></span>
-            <span class="pane__dot c-yellow"></span>
-            <span class="pane__dot c-green"></span>
-            <span class="pane__title">git log --graph --oneline experience/</span>
-            <span class="pane__lang c-cyan">git</span>
-          </header>
-          <div class="pane__body log">
+        <div class="exp">
+          <h2 class="section-label">experience</h2>
 
-            <div class="log__head">
-              <h2 class="log__h2">work_log<span class="log__h2-paren">{ }</span></h2>
-              <div class="log__stats">
-                <span class="log__chip"><span class="c-green">●</span> 5 commits</span>
-                <span class="log__chip"><span class="c-yellow">●</span> 1 publication</span>
-                <span class="log__chip"><span class="c-pink">●</span> 4 internships</span>
+          <div class="exp__entry">
+            <div class="exp__ghost" aria-hidden="true">2025</div>
+            <div class="exp__inner">
+              <div class="exp__header">
+                <span class="exp__title">AI Engineer Intern</span>
+                <span class="c-dim">@</span>
+                <span class="exp__org c-cyan">NeuroTree</span>
+                <span class="exp__date">Sep 2025 — Apr 2026</span>
               </div>
-            </div>
-
-            <div class="commits">
-
-              <article class="commit commit--head" style="--i:0">
-                <div class="commit__rail">
-                  <span class="commit__dot"></span>
-                </div>
-                <div class="commit__body">
-                  <header class="commit__meta">
-                    <span class="commit__date">Sep 2025 — Apr 2026</span>
-                  </header>
-                  <h3 class="commit__title">
-                    AI Engineer Intern
-                    <span class="c-dim">@</span>
-                    <span class="commit__org c-cyan">NeuroTree</span>
-                  </h3>
-                  <ul class="commit__bullets">
-                    <li><span class="c-green">+</span> Built a CV pipeline that analyses children's drawings to assess fine-motor skills.</li>
-                    <li><span class="c-green">+</span> Shipped an agentic HR-screening app that ranks candidates against JDs via keyword + vector search.</li>
-                    <li><span class="c-green">+</span> Automated bill &amp; expense entry into Zoho Books by extracting structured data with LLMs.</li>
-                  </ul>
-                  <div class="commit__tags">
-                    <span>Python</span><span>PyTorch</span><span>LangGraph</span><span>OpenAI</span><span>OCR</span>
-                  </div>
-                </div>
-              </article>
-
-              <article class="commit commit--pub" style="--i:1">
-                <div class="commit__rail">
-                  <span class="commit__dot"></span>
-                </div>
-                <div class="commit__body">
-                  <header class="commit__meta">
-                    <span class="commit__date">Nov 2025</span>
-                  </header>
-                  <h3 class="commit__title">
-                    Multimodal Depression Detection
-                    <span class="c-dim">—</span>
-                    <span class="commit__org c-mauve">IEEE Xplore</span>
-                  </h3>
-                  <ul class="commit__bullets">
-                    <li><span class="c-cyan">★</span> Multimodal Transformer achieving <strong class="c-yellow">86.84% weighted F1</strong> on binary depression classification for the elderly.</li>
-                  </ul>
-                  <div class="commit__tags">
-                    <span>Transformer</span><span>Multimodal</span><span>Speech</span><span>Vision</span>
-                  </div>
-                </div>
-              </article>
-
-              <article class="commit" style="--i:2">
-                <div class="commit__rail">
-                  <span class="commit__dot"></span>
-                </div>
-                <div class="commit__body">
-                  <header class="commit__meta">
-                    <span class="commit__date">Jan 2025 — Aug 2025</span>
-                  </header>
-                  <h3 class="commit__title">
-                    AI Engineer Intern
-                    <span class="c-dim">@</span>
-                    <span class="commit__org c-cyan">Target Media SG</span>
-                  </h3>
-                  <ul class="commit__bullets">
-                    <li><span class="c-green">+</span> Hybrid SQL + vector search across <strong class="c-yellow">3,000+</strong> marketing assets.</li>
-                    <li><span class="c-green">+</span> Automated keyframe selection in infographic videos via edge detection.</li>
-                  </ul>
-                  <div class="commit__tags">
-                    <span>SQL</span><span>Vector DB</span><span>OpenCV</span>
-                  </div>
-                </div>
-              </article>
-
-              <article class="commit" style="--i:3">
-                <div class="commit__rail">
-                  <span class="commit__dot"></span>
-                </div>
-                <div class="commit__body">
-                  <header class="commit__meta">
-                    <span class="commit__date">Oct 2020 — Mar 2021</span>
-                  </header>
-                  <h3 class="commit__title">
-                    Game Developer Intern
-                    <span class="c-dim">@</span>
-                    <span class="commit__org c-cyan">OCBC</span>
-                  </h3>
-                  <ul class="commit__bullets">
-                    <li><span class="c-green">+</span> Designed &amp; developed an interactive RPG for HR to showcase job roles within the bank.</li>
-                    <li><span class="c-green">+</span> Built and deployed the game as an Android APK.</li>
-                  </ul>
-                  <div class="commit__tags">
-                    <span>Unity</span><span>C#</span><span>Android</span>
-                  </div>
-                </div>
-              </article>
-
-              <article class="commit commit--last" style="--i:4">
-                <div class="commit__rail">
-                  <span class="commit__dot"></span>
-                </div>
-                <div class="commit__body">
-                  <header class="commit__meta">
-                    <span class="commit__date">Jun 2020 — Sep 2020</span>
-                  </header>
-                  <h3 class="commit__title">
-                    Game Developer Intern
-                    <span class="c-dim">@</span>
-                    <span class="commit__org c-cyan">Tan Tock Seng Hospital</span>
-                  </h3>
-                  <ul class="commit__bullets">
-                    <li><span class="c-green">+</span> Led gameplay mechanics for a health-literacy game in Unity in a 4-person team.</li>
-                    <li><span class="c-green">+</span> Collaborated with designers on gameplay teaching antibiotic-misuse awareness.</li>
-                  </ul>
-                  <div class="commit__tags">
-                    <span>Unity</span><span>C#</span><span>Team</span>
-                  </div>
-                </div>
-              </article>
-
-            </div>
-          </div>
-        </article>
-
-        <!-- TOOLBELT -->
-        <article class="pane pane--skills">
-          <header class="pane__head">
-            <span class="pane__dot c-red"></span>
-            <span class="pane__dot c-yellow"></span>
-            <span class="pane__dot c-green"></span>
-            <span class="pane__title">~/.config/skills.toml</span>
-            <span class="pane__lang c-yellow">toml</span>
-          </header>
-          <div class="pane__body skills">
-            <div class="skills__group">
-              <div class="skills__label"><span class="c-pink">[</span>languages<span class="c-pink">]</span></div>
-              <div class="skills__items">
-                <span class="chip chip--lang">Python</span>
-                <span class="chip chip--lang">C#</span>
-                <span class="chip chip--lang">Java</span>
-                <span class="chip chip--lang">C</span>
-                <span class="chip chip--lang">SQL</span>
-              </div>
-            </div>
-            <div class="skills__group">
-              <div class="skills__label"><span class="c-pink">[</span>frameworks<span class="c-pink">]</span></div>
-              <div class="skills__items">
-                <span class="chip chip--fw">PyTorch</span>
-                <span class="chip chip--fw">scikit-learn</span>
-                <span class="chip chip--fw">LangGraph</span>
-                <span class="chip chip--fw">LangChain</span>
-                <span class="chip chip--fw">OpenAI</span>
-              </div>
-            </div>
-            <div class="skills__group">
-              <div class="skills__label"><span class="c-pink">[</span>platforms<span class="c-pink">]</span></div>
-              <div class="skills__items">
-                <span class="chip chip--plat">Docker</span>
-                <span class="chip chip--plat">AWS</span>
-                <span class="chip chip--plat">Unity</span>
+              <ul class="exp__list">
+                <li>Built a CV pipeline that analyses children's drawings to assess fine-motor skills.</li>
+                <li>Shipped an agentic HR-screening app that ranks candidates against JDs via keyword + vector search.</li>
+                <li>Automated bill &amp; expense entry into Zoho Books by extracting structured data with LLMs.</li>
+              </ul>
+              <div class="exp__tags">
+                <span>Python</span><span>PyTorch</span><span>LangGraph</span><span>OpenAI</span><span>OCR</span>
               </div>
             </div>
           </div>
-        </article>
+
+          <div class="exp__entry exp__entry--pub">
+            <div class="exp__ghost" aria-hidden="true">2025</div>
+            <div class="exp__inner">
+              <div class="exp__header">
+                <span class="exp__title">Multimodal Depression Detection</span>
+                <span class="c-dim">—</span>
+                <span class="exp__org c-mauve">IEEE Xplore</span>
+                <span class="exp__date">Nov 2025</span>
+              </div>
+              <ul class="exp__list">
+                <li>Multimodal Transformer achieving <strong class="c-yellow">86.84% weighted F1</strong> on binary depression classification for the elderly.</li>
+              </ul>
+              <div class="exp__tags">
+                <span>Transformer</span><span>Multimodal</span><span>Speech</span><span>Vision</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="exp__entry">
+            <div class="exp__ghost" aria-hidden="true">2025</div>
+            <div class="exp__inner">
+              <div class="exp__header">
+                <span class="exp__title">AI Engineer Intern</span>
+                <span class="c-dim">@</span>
+                <span class="exp__org c-cyan">Target Media SG</span>
+                <span class="exp__date">Jan 2025 — Aug 2025</span>
+              </div>
+              <ul class="exp__list">
+                <li>Hybrid SQL + vector search across <strong class="c-yellow">3,000+</strong> marketing assets.</li>
+                <li>Automated keyframe selection in infographic videos via edge detection.</li>
+              </ul>
+              <div class="exp__tags">
+                <span>SQL</span><span>Vector DB</span><span>OpenCV</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="exp__entry">
+            <div class="exp__ghost" aria-hidden="true">2020</div>
+            <div class="exp__inner">
+              <div class="exp__header">
+                <span class="exp__title">Game Developer Intern</span>
+                <span class="c-dim">@</span>
+                <span class="exp__org c-cyan">OCBC</span>
+                <span class="exp__date">Oct 2020 — Mar 2021</span>
+              </div>
+              <ul class="exp__list">
+                <li>Designed &amp; developed an interactive RPG for HR to showcase job roles within the bank.</li>
+                <li>Built and deployed the game as an Android APK.</li>
+              </ul>
+              <div class="exp__tags">
+                <span>Unity</span><span>C#</span><span>Android</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="exp__entry exp__entry--last">
+            <div class="exp__ghost" aria-hidden="true">2020</div>
+            <div class="exp__inner">
+              <div class="exp__header">
+                <span class="exp__title">Game Developer Intern</span>
+                <span class="c-dim">@</span>
+                <span class="exp__org c-cyan">Tan Tock Seng Hospital</span>
+                <span class="exp__date">Jun 2020 — Sep 2020</span>
+              </div>
+              <ul class="exp__list">
+                <li>Led gameplay mechanics for a health-literacy game in Unity in a 4-person team.</li>
+                <li>Collaborated with designers on gameplay teaching antibiotic-misuse awareness.</li>
+              </ul>
+              <div class="exp__tags">
+                <span>Unity</span><span>C#</span><span>Team</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skillset">
+          <h2 class="section-label">skills</h2>
+          <div class="skillset__run">
+            <span class="sk sk--lang">Python</span>
+            <span class="sk sk--lang">C#</span>
+            <span class="sk sk--lang">Java</span>
+            <span class="sk sk--lang">C</span>
+            <span class="sk sk--lang">SQL</span>
+            <span class="sk-sep">·</span>
+            <span class="sk sk--fw">PyTorch</span>
+            <span class="sk sk--fw">scikit-learn</span>
+            <span class="sk sk--fw">LangGraph</span>
+            <span class="sk sk--fw">LangChain</span>
+            <span class="sk sk--fw">OpenAI</span>
+            <span class="sk-sep">·</span>
+            <span class="sk sk--plat">Docker</span>
+            <span class="sk sk--plat">AWS</span>
+            <span class="sk sk--plat">Unity</span>
+          </div>
+        </div>
 
       </div>
     </section>
@@ -377,110 +269,62 @@
     <div class="section-sep" aria-hidden="true"></div>
 
     <!-- ============================================= -->
-    <!-- ================ PROJECTS =================== -->
+    <!-- ================= PROJECTS ================== -->
     <!-- ============================================= -->
     <section class="view" id="projects">
       <div class="grid grid--projects">
 
-        <article class="pane pane--tree">
-          <header class="pane__head">
-            <span class="pane__dot c-red"></span>
-            <span class="pane__dot c-yellow"></span>
-            <span class="pane__dot c-green"></span>
-            <span class="pane__title">tree ~/projects</span>
-            <span class="pane__lang c-green">fs</span>
-          </header>
-          <div class="pane__body proj">
+        <div class="projlist">
+          <h2 class="section-label">projects</h2>
 
-            <div class="proj__head">
-              <h2 class="proj__h2">~<span class="c-dim">/</span>projects<span class="c-cyan">/</span></h2>
-              <div class="proj__count"><span class="c-green">●</span> 2 directories · 0 files</div>
-            </div>
-
-            <div class="projects">
-
-              <article class="project" data-expanded="true">
-                <button class="project__row" aria-expanded="true">
-                  <span class="project__chev">▾</span>
-                  <span class="project__idx c-dim">001</span>
-                  <span class="project__icon c-cyan">📁</span>
-                  <span class="project__name">agent-deployer</span>
-                  <span class="project__year c-dim">2025</span>
-                  <span class="project__stack">
-                    <span class="chip chip--mini chip--lang">Python</span>
-                    <span class="chip chip--mini chip--fw">FastAPI</span>
-                    <span class="chip chip--mini chip--fw">Gemini</span>
-                    <span class="chip chip--mini chip--plat">Cloud Run</span>
-                  </span>
-                  <span class="project__status c-green">gemini hackathon</span>
-                </button>
-                <div class="project__panel">
-                  <div class="project__panelinner">
-                    <p class="project__desc">
-                      AI-powered deployment tool pairing a Python (FastAPI) backend with a VS Code extension.
-                      Uses Gemini with agentic tools to iteratively explore a project, generate a Dockerfile,
-                      build the image, and deploy it to Google Cloud Run via Artifact Registry — end-to-end
-                      with OAuth auth and runtime env-var support.
-                    </p>
-                    <div class="project__kvs">
-                      <div class="project__kv"><span class="c-dim">role</span><span>agent design · backend · ext</span></div>
-                      <div class="project__kv"><span class="c-dim">stack</span><span>Python · TS · Docker</span></div>
-                      <div class="project__kv"><span class="c-dim">status</span><span class="c-green">gemini hackathon</span></div>
-                    </div>
-                    <div class="project__links">
-                      <a href="https://github.com/mefetsi/hackathon-project-deployer" target="_blank" rel="noopener" class="project__link">
-                        <span class="c-pink">[</span>source<span class="c-pink">]</span>
-                        <span class="c-cyan">↗</span>
-                      </a>
-                    </div>
-                  </div>
+          <div class="proj">
+            <div class="proj__num" aria-hidden="true">01</div>
+            <div class="proj__body">
+              <div class="proj__name">agent-deployer</div>
+              <p class="proj__desc">
+                AI-powered deployment tool pairing a Python (FastAPI) backend with a VS Code extension.
+                Uses Gemini with agentic tools to iteratively explore a project, generate a Dockerfile,
+                build the image, and deploy it to Google Cloud Run — end-to-end with OAuth auth and
+                runtime env-var support.
+              </p>
+              <div class="proj__foot">
+                <div class="proj__tags">
+                  <span>Python</span><span>FastAPI</span><span>Gemini</span><span>Cloud Run</span><span>TypeScript</span>
                 </div>
-              </article>
-
-              <article class="project" data-expanded="false">
-                <button class="project__row" aria-expanded="false">
-                  <span class="project__chev">▸</span>
-                  <span class="project__idx c-dim">002</span>
-                  <span class="project__icon c-yellow">📁</span>
-                  <span class="project__name">event-management-system</span>
-                  <span class="project__year c-dim">2024</span>
-                  <span class="project__stack">
-                    <span class="chip chip--mini chip--plat">AWS</span>
-                    <span class="chip chip--mini chip--lang">PHP</span>
-                    <span class="chip chip--mini chip--lang">MySQL</span>
-                  </span>
-                  <span class="project__status c-dim">archived</span>
-                </button>
-                <div class="project__panel">
-                  <div class="project__panelinner">
-                    <p class="project__desc">
-                      Cloud-based event management system deployed on AWS EC2 &amp; RDS with Auto Scaling,
-                      Load Balancer, IAM, and VPC for high availability and security.
-                    </p>
-                    <div class="project__kvs">
-                      <div class="project__kv"><span class="c-dim">role</span><span>full-stack · infra</span></div>
-                      <div class="project__kv"><span class="c-dim">region</span><span>ap-southeast-1</span></div>
-                      <div class="project__kv"><span class="c-dim">status</span><span class="c-yellow">archived</span></div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
+                <span class="proj__status c-green">gemini hackathon · 2026</span>
+              </div>
+              <a href="https://github.com/mefetsi/hackathon-project-deployer" target="_blank" rel="noopener" class="proj__link">source ↗</a>
             </div>
-
-            <footer class="credits">
-              <span class="c-dim">$</span>
-              <span>Timothy Zoe Delaya</span>
-              <span class="c-dim">·</span>
-              <span class="c-mauve">Singapore</span>
-              <span class="c-dim">·</span>
-              <span class="c-yellow">2026</span>
-              <span class="c-dim">·</span>
-              <span>built with too much coffee</span>
-            </footer>
-
           </div>
-        </article>
+
+          <div class="proj">
+            <div class="proj__num" aria-hidden="true">02</div>
+            <div class="proj__body">
+              <div class="proj__name">event-management-system</div>
+              <p class="proj__desc">
+                Cloud-based event management system deployed on AWS EC2 &amp; RDS with Auto Scaling,
+                Load Balancer, IAM, and VPC for high availability and security.
+              </p>
+              <div class="proj__foot">
+                <div class="proj__tags">
+                  <span>AWS</span><span>PHP</span><span>MySQL</span>
+                </div>
+                <span class="proj__status c-dim">archived · 2024</span>
+              </div>
+            </div>
+          </div>
+
+          <footer class="credits">
+            <span class="c-dim">$</span>
+            <span>Timothy Zoe Delaya</span>
+            <span class="c-dim">·</span>
+            <span class="c-mauve">Singapore</span>
+            <span class="c-dim">·</span>
+            <span class="c-yellow">2026</span>
+            <span class="c-dim">·</span>
+            <span>built with too much coffee</span>
+          </footer>
+        </div>
 
       </div>
     </section>
@@ -490,7 +334,7 @@
   <!-- STATUS BAR -->
   <footer class="statusbar">
     <div class="statusbar__group">
-      <span class="statusbar__mode c-bg" id="status-mode">NORMAL</span>
+      <span class="statusbar__mode c-bg" id="status-mode">HOME</span>
       <span class="statusbar__file" id="status-file">~/about.md</span>
     </div>
     <div class="statusbar__group statusbar__center">
@@ -512,73 +356,6 @@
 </div>
 
 <div class="vignette" aria-hidden="true"></div>
-
-<!-- Inline boot — runs even if module loading fails (e.g. file://) -->
-<script>
-(function () {
-  var bootEl = document.getElementById("boot");
-  var logEl = document.getElementById("boot-log");
-  var fillEl = document.getElementById("boot-fill");
-  if (!bootEl || !logEl || !fillEl) return;
-
-  var lines = [
-    ["[ ", "ok", " ] booting tzd-os v4.26.1 …"],
-    ["[ ", "ok", " ] mounting /dev/curiosity"],
-    ["[ ", "ok", " ] loading kernel modules: pytorch langgraph docker"],
-    ["[ ", "ok", " ] starting service: agentd"],
-    ["[ ", "ok", " ] starting service: vision-pipeline"],
-    ["[ ", "ok", " ] starting service: caffeine.timer"],
-    ["[ ", "ok", " ] resolving identity → timothy.zoe.delaya"],
-    ["[ ", "ok", " ] portfolio session ready."],
-    ["", "", ""],
-    ["welcome,", "pink", " visitor."]
-  ];
-
-  var i = 0, html = "", finished = false;
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>]/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c];
-    });
-  }
-
-  function finish() {
-    if (finished) return;
-    finished = true;
-    fillEl.style.width = "100%";
-    setTimeout(function () { bootEl.classList.add("is-done"); }, 250);
-  }
-
-  function tick() {
-    if (finished) return;
-    if (i >= lines.length) { finish(); return; }
-    var l = lines[i];
-    if (l[1] === "ok") {
-      html += '<span style="color:var(--fg-dim)">' + l[0] + '</span>'
-            + '<span style="color:var(--green);font-weight:600">ok</span>'
-            + '<span style="color:var(--fg-dim)">' + escapeHtml(l[2].slice(0, 2)) + '</span>'
-            + '<span style="color:var(--fg-soft)">' + escapeHtml(l[2].slice(2)) + '</span>\n';
-    } else if (l[1] === "pink") {
-      html += escapeHtml(l[0]) + '<span style="color:var(--pink);font-weight:600">' + escapeHtml(l[2]) + '</span>\n';
-    } else {
-      html += "\n";
-    }
-    logEl.innerHTML = html;
-    i++;
-    fillEl.style.width = ((i / lines.length) * 100) + "%";
-    setTimeout(tick, 90 + Math.random() * 60);
-  }
-
-  // hard fallback — never let the boot screen hang forever
-  setTimeout(finish, 4000);
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") finish();
-  });
-
-  tick();
-})();
-</script>
 
 <script src="js/icons.js"></script>
 <script src="js/main.js" defer></script>
