@@ -45,6 +45,12 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@property --reveal {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 html, body { height: 100%; max-width: 100%; overflow-x: hidden; }
 
 body {
@@ -110,7 +116,7 @@ body::before {
   background-size: 32px 32px;
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
 }
 
 .vignette {
@@ -175,7 +181,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   content: "";
   position: absolute; inset: 0;
   background: linear-gradient(90deg,
-    rgba(245,163,199,0.08), transparent 30%, transparent 70%, rgba(127,219,202,0.08));
+    rgba(245,163,199,0.05), transparent 30%, transparent 70%, rgba(127,219,202,0.05));
   pointer-events: none;
 }
 
@@ -218,6 +224,13 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
     width     280ms cubic-bezier(0.2, 0.8, 0.2, 1);
   pointer-events: none;
+}
+.tmux__tabs.no-anim .tab-underline { transition: none; }
+
+.tmux__type-caret {
+  color: var(--cyan);
+  margin-left: 1px;
+  animation: blink 1.05s steps(2) infinite;
 }
 
 .tmux__right { display: flex; align-items: center; gap: 8px; }
@@ -343,20 +356,24 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   100% { box-shadow: 0 0 0 0 rgba(158, 206, 106, 0); }
 }
 
-/* Name — typewriter chars */
 .hero__name {
   margin: 0;
-  padding-bottom: 0.22em;
+  padding-bottom: 0.16em;
   font-family: var(--sans);
   font-weight: 700;
   font-size: clamp(3rem, 8vw, 7.2rem);
-  line-height: 1.05;
+  line-height: 1.02;
   letter-spacing: -0.04em;
   display: flex;
   flex-direction: column;
   gap: 0;
 }
-.hero__row { display: block; }
+.hero__row {
+  display: block;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: nameRise 420ms var(--ease-out) forwards 120ms;
+}
 .hero__row--last {
   background: linear-gradient(110deg,
     var(--pink) 0%, var(--mauve) 28%, var(--cyan) 56%, var(--mauve) 84%, var(--pink) 100%);
@@ -366,29 +383,22 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 24px rgba(196, 167, 231, 0.25));
-  animation: gradientFlow 14s var(--ease) infinite;
+  -webkit-mask-image: linear-gradient(90deg,
+    #000 0%, #000 var(--reveal), transparent calc(var(--reveal) + 8%), transparent 100%);
+          mask-image: linear-gradient(90deg,
+    #000 0%, #000 var(--reveal), transparent calc(var(--reveal) + 8%), transparent 100%);
+  animation:
+    gradientFlow 14s var(--ease) infinite,
+    nameRise 420ms var(--ease-out) forwards 200ms,
+    nameWipe 720ms var(--ease-out) forwards 240ms;
 }
 @keyframes gradientFlow {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
-.hero__char {
-  display: inline;
-  visibility: hidden;
-  animation: typeCharSafety 0.01s steps(1) 5000ms forwards;
-}
-body.boot-done .hero__char {
-  animation: typeChar 0.01s steps(1) calc(var(--n, 0) * 70ms + 200ms) forwards;
-}
-.hero__space {
-  display: inline-block;
-  width: 0.18em;
-  vertical-align: top;
-}
-@keyframes typeChar       { to { visibility: visible; } }
-@keyframes typeCharSafety { to { visibility: visible; } }
+@keyframes nameRise { to { opacity: 1; transform: translateY(0); } }
+@keyframes nameWipe { to { --reveal: 100%; } }
 
 .hero__caret-end {
   display: inline-block;
@@ -401,8 +411,8 @@ body.boot-done .hero__char {
 }
 body.boot-done .hero__caret-end {
   animation:
-    caretAppear 0.3s ease forwards 1500ms,
-    caretBlink  1.1s steps(2) infinite 1600ms;
+    caretAppear 0.3s ease forwards 1000ms,
+    caretBlink  1.1s steps(2) infinite 1100ms;
 }
 @keyframes caretAppear { to { opacity: 0.9; } }
 @keyframes caretBlink {
@@ -459,10 +469,10 @@ body.boot-done .hero__caret-end {
   padding: 9px 0;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   font-size: 13px;
-  transition: transform 0.2s var(--ease);
+  transition: transform 80ms ease-out;
 }
 .hero__link:last-child { border-bottom: none; }
-.hero__link:hover { transform: translateX(4px); }
+.hero__link:hover { transform: translate(calc(4px + var(--mx, 0px)), var(--my, 0px)); }
 .hero__link:hover .hero__link-val { color: var(--cyan); }
 .hero__link:hover .hero__link-arr { color: var(--cyan); transform: translate(2px, -2px); }
 .hero__link-key {
@@ -491,7 +501,7 @@ body.boot-done .hero__caret-end {
 }
 .caret {
   display: inline-block; margin-left: 2px;
-  color: var(--cyan); animation: blink 1s infinite;
+  color: var(--cyan); animation: blink 1.05s steps(2) infinite;
 }
 @keyframes blink { 50% { opacity: 0; } }
 
@@ -501,23 +511,21 @@ body.boot-done .hero__caret-end {
 .exp { display: flex; flex-direction: column; }
 
 .exp__entry {
-  padding: 24px 0;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  /* reveal animation */
   opacity: 0;
-  transform: translateY(22px);
+  transform: translate(var(--mx, 0px), calc(var(--my, 0px) + 22px));
   transition:
-    opacity 0.55s var(--ease-out),
-    transform 0.55s var(--ease-out),
+    transform 0.55s var(--ease-out) calc(var(--i, 0) * 70ms),
+    opacity 0.55s var(--ease-out) calc(var(--i, 0) * 70ms),
     background 0.25s var(--ease);
-  transition-delay: calc(var(--i, 0) * 70ms);
   border-radius: 6px;
   margin: 0 -14px;
   padding: 24px 14px;
 }
 .exp__entry.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+  transition: transform 80ms ease-out, background 0.25s var(--ease);
 }
 .exp__entry:hover { background: rgba(127, 219, 202, 0.03); }
 .exp__entry:hover .exp__title { color: var(--cyan); }
@@ -627,18 +635,17 @@ body.boot-done .hero__caret-end {
   border-bottom: 1px solid rgba(255,255,255,0.05);
   align-items: start;
   border-radius: 6px;
-  /* reveal animation */
   opacity: 0;
-  transform: translateY(22px);
+  transform: translate(var(--mx, 0px), calc(var(--my, 0px) + 22px));
   transition:
-    opacity 0.55s var(--ease-out),
-    transform 0.55s var(--ease-out),
+    transform 0.55s var(--ease-out) calc(var(--i, 0) * 90ms),
+    opacity 0.55s var(--ease-out) calc(var(--i, 0) * 90ms),
     background 0.25s var(--ease);
-  transition-delay: calc(var(--i, 0) * 90ms);
 }
 .proj.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+  transition: transform 80ms ease-out, background 0.25s var(--ease);
 }
 .proj:last-of-type { border-bottom: none; }
 .proj:hover { background: rgba(127, 219, 202, 0.03); }
@@ -713,9 +720,11 @@ body.boot-done .hero__caret-end {
 }
 .statusbar__mode  { animation: statusIn 0.3s var(--ease-out)  50ms both; }
 .statusbar__file  { animation: statusIn 0.3s var(--ease-out) 130ms both; }
-.statusbar__hint  { animation: statusIn 0.3s var(--ease-out) 220ms both; }
-.statusbar__git   { animation: statusIn 0.3s var(--ease-out) 320ms both; }
-.statusbar__time  { animation: statusIn 0.3s var(--ease-out) 400ms both; }
+.statusbar__hint:nth-of-type(1) { animation: statusIn 0.3s var(--ease-out) 220ms both; }
+.statusbar__hint:nth-of-type(2) { animation: statusIn 0.3s var(--ease-out) 270ms both; }
+.statusbar__hint:nth-of-type(3) { animation: statusIn 0.3s var(--ease-out) 320ms both; }
+.statusbar__git   { animation: statusIn 0.3s var(--ease-out) 380ms both; }
+.statusbar__time  { animation: statusIn 0.3s var(--ease-out) 460ms both; }
 
 /* =============================================================
    STATUS BAR

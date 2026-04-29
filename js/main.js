@@ -3,8 +3,8 @@
 ============================================================= */
 const VIEWS = ["home", "work", "projects"];
 const FILES = {
-  home: "~/about.md",
-  work: "~/experience/log",
+  home:     "~/about.md",
+  work:     "~/work.log",
   projects: "~/projects/",
 };
 const STATUS_MODES = {
@@ -155,8 +155,16 @@ if (VIEWS.includes(initial)) {
   setTimeout(() => scrollToSection(initial), 50);
   currentView = initial;
 }
-syncUI(currentView);
-window.addEventListener("resize", () => syncUI(currentView));
+function syncUIQuiet(name) {
+  if (!tabsContainer) return syncUI(name);
+  tabsContainer.classList.add("no-anim");
+  syncUI(name);
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => tabsContainer.classList.remove("no-anim"))
+  );
+}
+syncUIQuiet(currentView);
+window.addEventListener("resize", () => syncUIQuiet(currentView));
 startTypewriter();
 
 /* =============================================================
@@ -302,25 +310,15 @@ setInterval(tickClock, 1000);
 
 
 
-/* =============================================================
-   HERO NAME — set per-char stagger index, append the trailing
-   caret, and flip body.boot-done so the CSS animation starts.
-   If any of this JS fails, the safety animation in CSS still
-   fires at 5s so the name never stays hidden.
-============================================================= */
 (function heroNameInit() {
   const root = document.getElementById("hero-name");
   if (!root) return;
-  const chars = root.querySelectorAll(".hero__char, .hero__space");
-  chars.forEach((el, i) => el.style.setProperty("--n", i));
-
   const lastRow = root.querySelector('[data-row="last"]') || root.querySelector(".hero__row--last");
   if (lastRow && !lastRow.querySelector(".hero__caret-end")) {
     const caret = document.createElement("span");
     caret.className = "hero__caret-end";
     lastRow.appendChild(caret);
   }
-
   document.body.classList.add("boot-done");
 })();
 
@@ -332,16 +330,24 @@ setInterval(tickClock, 1000);
   const sep  = document.querySelector(".tmux__sep");
   const host = document.querySelector(".tmux__host");
   if (!name || !sep || !host) return;
-  const parts = [[name, "timothyzd"], [sep, "·"], [host, "portfolio"]];
+  sep.textContent = "·";
+  const parts = [[name, "timothyzd"], [host, "portfolio"]];
   parts.forEach(([el]) => (el.textContent = ""));
   let p = 0;
   const typeNext = () => {
     if (p >= parts.length) return;
     const [el, text] = parts[p++];
+    const caret = document.createElement("span");
+    caret.className = "tmux__type-caret";
+    caret.textContent = "▋";
+    el.appendChild(caret);
     let i = 0;
     const tick = () => {
-      if (i >= text.length) return typeNext();
-      el.textContent += text[i++];
+      if (i >= text.length) {
+        caret.remove();
+        return typeNext();
+      }
+      caret.insertAdjacentText("beforebegin", text[i++]);
       setTimeout(tick, 21);
     };
     tick();
@@ -362,12 +368,14 @@ setInterval(tickClock, 1000);
       const r = el.getBoundingClientRect();
       const mx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
       const my = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-      el.style.transition = "transform 80ms ease-out";
-      el.style.transform  = `translate(${mx * 3}px, ${my * 3}px)`;
+      el.style.setProperty("--mx", (mx * 3) + "px");
+      el.style.setProperty("--my", (my * 3) + "px");
     });
     el.addEventListener("mouseleave", () => {
-      el.style.transition = "transform 200ms ease";
-      el.style.transform  = "";
+      el.style.removeProperty("--mx");
+      el.style.removeProperty("--my");
     });
   });
 })();
+
+window.addEventListener("pageshow", (e) => { if (e.persisted) syncUI(currentView); });
