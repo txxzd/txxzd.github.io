@@ -211,9 +211,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   letter-spacing: 0.02em;
   color: var(--fg-dim);
   position: relative;
-  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  transition: color 0.2s var(--ease), background 0.2s var(--ease), transform 0.16s ease-out;
 }
-.tab:hover { color: var(--fg); background: rgba(255,255,255,0.03); }
+.tab:active { transform: scale(0.97); }
 .tab--active { color: var(--fg); }
 
 .tab-underline {
@@ -245,31 +245,25 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--pane-edge);
   font-size: 11px; color: var(--fg-soft);
-  transition: all 0.2s var(--ease);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.16s ease-out;
 }
-.tmux__cmdk:hover { background: color-mix(in oklch, var(--mauve) 10%, transparent); color: var(--mauve); border-color: color-mix(in oklch, var(--mauve) 30%, transparent); }
+.tmux__cmdk:active { transform: scale(0.97); }
 
 .tmux__ico {
   display: grid; place-items: center;
   width: 28px; height: 28px;
   border-radius: 5px; color: var(--fg-dim);
-  transition: all 0.2s var(--ease);
+  transition: color 0.2s var(--ease), background 0.2s var(--ease), transform 0.16s ease-out;
 }
-.tmux__ico:hover { color: var(--cyan); background: color-mix(in oklch, var(--cyan) 8%, transparent); }
-
 .tmux__cta {
   display: flex; align-items: center; gap: 6px;
   padding: 5px 12px; border-radius: 5px;
   background: linear-gradient(135deg, color-mix(in oklch, var(--pink) 15%, transparent), color-mix(in oklch, var(--mauve) 15%, transparent));
   border: 1px solid color-mix(in oklch, var(--pink) 30%, transparent);
   font-size: 12px; font-weight: 500; color: var(--fg);
-  transition: all 0.2s var(--ease);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
-.tmux__cta:hover {
-  background: linear-gradient(135deg, color-mix(in oklch, var(--pink) 25%, transparent), color-mix(in oklch, var(--mauve) 25%, transparent));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px color-mix(in oklch, var(--pink) 15%, transparent);
-}
+.tmux__cta:active { transform: scale(0.97); box-shadow: none; }
 
 /* =============================================================
    MAIN SCROLL CONTAINER + VIEWS
@@ -476,9 +470,7 @@ body.boot-done .hero__caret-end {
   transition: transform 80ms ease-out;
 }
 .hero__link:last-child { border-bottom: none; }
-.hero__link:hover { transform: translate(calc(4px + var(--mx, 0px)), var(--my, 0px)); }
-.hero__link:hover .hero__link-val { color: var(--cyan); }
-.hero__link:hover .hero__link-arr { color: var(--cyan); transform: translate(2px, -2px); }
+.hero__link:active { transform: scale(0.97); }
 .hero__link-key {
   color: var(--fg-dim); font-size: 11px;
   width: 64px; flex-shrink: 0;
@@ -527,7 +519,6 @@ body.boot-done .hero__caret-end {
   transition: background 0.25s var(--ease);
 }
 .note:not(:last-child) { border-right: 1px solid var(--border-hard); }
-.note:hover { background: color-mix(in oklch, var(--note-color) 5%, transparent); }
 
 .note--cyan   { --note-color: var(--cyan); }
 .note--mauve  { --note-color: var(--mauve); }
@@ -546,7 +537,6 @@ body.boot-done .hero__caret-end {
   pointer-events: none;
   transition: color 0.25s var(--ease);
 }
-.note:hover .note__ghost { color: color-mix(in oklch, var(--note-color) 7%, transparent); }
 
 .note__key {
   display: block;
@@ -591,8 +581,8 @@ body.boot-done .hero__caret-end {
   opacity: 0;
   transform: translate(var(--mx, 0px), calc(var(--my, 0px) + 22px));
   transition:
-    transform 0.55s var(--ease-out) calc(var(--i, 0) * 70ms),
-    opacity 0.55s var(--ease-out) calc(var(--i, 0) * 70ms),
+    transform 0.35s var(--ease-out) calc(var(--i, 0) * 70ms),
+    opacity 0.35s var(--ease-out) calc(var(--i, 0) * 70ms),
     background 0.25s var(--ease);
   border-radius: 6px;
   margin: 0 -14px;
@@ -603,11 +593,6 @@ body.boot-done .hero__caret-end {
   transform: translate(var(--mx, 0px), var(--my, 0px));
   transition: transform 80ms ease-out, background 0.25s var(--ease);
 }
-.exp__entry:hover { background: color-mix(in oklch, var(--cyan) 3%, transparent); }
-.exp__entry:hover .exp__title { color: var(--cyan); }
-.exp__entry:hover .exp__ghost { color: color-mix(in oklch, var(--cyan) 5.5%, transparent); }
-.exp__entry--pub:hover .exp__title { color: var(--mauve); }
-.exp__entry--pub:hover .exp__ghost { color: color-mix(in oklch, var(--mauve) 7%, transparent); }
 .exp__entry--last { border-bottom: none; }
 
 /* ghost year number — gives timeline depth without adding boxes */
@@ -714,8 +699,8 @@ body.boot-done .hero__caret-end {
   opacity: 0;
   transform: translate(var(--mx, 0px), calc(var(--my, 0px) + 22px));
   transition:
-    transform 0.55s var(--ease-out) calc(var(--i, 0) * 90ms),
-    opacity 0.55s var(--ease-out) calc(var(--i, 0) * 90ms),
+    transform 0.35s var(--ease-out) calc(var(--i, 0) * 90ms),
+    opacity 0.35s var(--ease-out) calc(var(--i, 0) * 90ms),
     background 0.25s var(--ease);
 }
 .proj.is-visible {
@@ -724,9 +709,6 @@ body.boot-done .hero__caret-end {
   transition: transform 80ms ease-out, background 0.25s var(--ease);
 }
 .proj:last-of-type { border-bottom: none; }
-.proj:hover { background: color-mix(in oklch, var(--cyan) 3%, transparent); }
-.proj:hover .proj__num { color: color-mix(in oklch, var(--fg) 14%, transparent); }
-.proj:hover .proj__name { color: var(--cyan); }
 
 .proj__num {
   font-family: var(--sans);
@@ -771,9 +753,9 @@ body.boot-done .hero__caret-end {
 .proj__link {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 12px; color: var(--cyan);
-  transition: opacity 0.2s var(--ease);
+  transition: color 0.2s var(--ease), transform 0.16s ease-out;
 }
-.proj__link:hover { opacity: 0.7; }
+.proj__link:active { transform: scale(0.97); }
 
 /* =============================================================
    CREDITS
@@ -864,6 +846,7 @@ body.boot-done .hero__caret-end {
   transition: transform 0.25s var(--ease-out);
 }
 .palette.is-open .palette__panel { transform: translateY(0) scale(1); }
+.palette--kbd .palette__panel { transition-duration: 0ms; }
 
 .palette__head {
   display: flex; align-items: center; gap: 10px;
@@ -890,14 +873,42 @@ body.boot-done .hero__caret-end {
   align-items: center; gap: 10px;
   padding: 9px 12px; border-radius: 5px;
   font-size: 13px; cursor: pointer;
-  transition: background 0.1s var(--ease);
+  transition: background 0.1s var(--ease), transform 0.16s ease-out;
 }
-.palette__item:hover,
-.palette__item.is-active { background: color-mix(in oklch, var(--cyan) 8%, transparent); }
-.palette__item.is-active { box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--cyan) 30%, transparent); }
+.palette__item.is-active { background: color-mix(in oklch, var(--cyan) 8%, transparent); box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--cyan) 30%, transparent); }
+.palette__item:active { transform: scale(0.97); }
 .palette__item-name { color: var(--fg); }
 .palette__item-hint { color: var(--fg-dim); font-size: 11px; }
 .palette__item .c-cyan svg { display: block; }
+
+/* =============================================================
+   HOVER — only for true pointer devices
+============================================================= */
+@media (hover: hover) and (pointer: fine) {
+  .tab:hover { color: var(--fg); background: rgba(255,255,255,0.03); }
+  .tmux__cmdk:hover { background: color-mix(in oklch, var(--mauve) 10%, transparent); color: var(--mauve); border-color: color-mix(in oklch, var(--mauve) 30%, transparent); }
+  .tmux__ico:hover { color: var(--cyan); background: color-mix(in oklch, var(--cyan) 8%, transparent); }
+  .tmux__cta:hover {
+    background: linear-gradient(135deg, color-mix(in oklch, var(--pink) 25%, transparent), color-mix(in oklch, var(--mauve) 25%, transparent));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px color-mix(in oklch, var(--pink) 15%, transparent);
+  }
+  .note:hover { background: color-mix(in oklch, var(--note-color) 5%, transparent); }
+  .note:hover .note__ghost { color: color-mix(in oklch, var(--note-color) 7%, transparent); }
+  .exp__entry:hover { background: color-mix(in oklch, var(--cyan) 3%, transparent); }
+  .exp__entry:hover .exp__title { color: var(--cyan); }
+  .exp__entry:hover .exp__ghost { color: color-mix(in oklch, var(--cyan) 5.5%, transparent); }
+  .exp__entry--pub:hover .exp__title { color: var(--mauve); }
+  .exp__entry--pub:hover .exp__ghost { color: color-mix(in oklch, var(--mauve) 7%, transparent); }
+  .proj:hover { background: color-mix(in oklch, var(--cyan) 3%, transparent); }
+  .proj:hover .proj__num { color: color-mix(in oklch, var(--fg) 14%, transparent); }
+  .proj:hover .proj__name { color: var(--cyan); }
+  .hero__link:hover { transform: translate(calc(4px + var(--mx, 0px)), var(--my, 0px)); }
+  .hero__link:hover .hero__link-val { color: var(--cyan); }
+  .hero__link:hover .hero__link-arr { color: var(--cyan); transform: translate(2px, -2px); }
+  .proj__link:hover { color: var(--cyan-d); }
+  .palette__item:hover { background: color-mix(in oklch, var(--cyan) 8%, transparent); }
+}
 
 /* =============================================================
    RESPONSIVE
@@ -967,7 +978,8 @@ body.boot-done .hero__caret-end {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: opacity, color, background-color, border-color !important;
+    transition-duration: 0.2s !important;
   }
 }
 
@@ -1009,7 +1021,9 @@ body.boot-done .hero__caret-end {
 [data-theme="cream"] .exp__ghost { color: oklch(0.15 0.010 45 / 0.04); }
 [data-theme="cream"] .note__ghost { color: oklch(0.15 0.010 45 / 0.05); }
 [data-theme="cream"] .proj__num { color: oklch(0.15 0.010 45 / 0.07); }
-[data-theme="cream"] .proj:hover .proj__num { color: oklch(0.15 0.010 45 / 0.16); }
+@media (hover: hover) and (pointer: fine) {
+  [data-theme="cream"] .proj:hover .proj__num { color: oklch(0.15 0.010 45 / 0.16); }
+}
 [data-theme="cream"] .hero__prompt {
   background: oklch(0.89 0.015 70 / 0.5);
   border-color: var(--border-soft);

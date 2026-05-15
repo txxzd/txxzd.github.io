@@ -258,7 +258,8 @@ function runPaletteItem(it) {
   it.action();
 }
 
-function openPalette() {
+function openPalette(fromKeyboard = false) {
+  if (fromKeyboard) palette.classList.add("palette--kbd");
   palette.classList.add("is-open");
   paletteActive = 0;
   renderPalette("");
@@ -267,6 +268,7 @@ function openPalette() {
 }
 function closePalette() {
   palette.classList.remove("is-open");
+  palette.classList.remove("palette--kbd");
 }
 
 paletteOpen.addEventListener("click", openPalette);
@@ -276,7 +278,7 @@ document.addEventListener("keydown", (e) => {
   if (isMod && e.key.toLowerCase() === "k") {
     e.preventDefault();
     if (palette.classList.contains("is-open")) closePalette();
-    else openPalette();
+    else openPalette(true);
   } else if (e.key === "Escape" && palette.classList.contains("is-open")) {
     closePalette();
   }
@@ -375,16 +377,25 @@ setInterval(tickClock, 1000);
   if (reduced || touch) return;
   const els = document.querySelectorAll(".hero__link, .proj, .exp__entry");
   els.forEach((el) => {
+    const useDirectTransform = el.classList.contains("hero__link");
     el.addEventListener("mousemove", (e) => {
       const r = el.getBoundingClientRect();
       const mx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
       const my = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-      el.style.setProperty("--mx", (mx * 3) + "px");
-      el.style.setProperty("--my", (my * 3) + "px");
+      if (useDirectTransform) {
+        el.style.transform = `translate(${mx * 3}px, ${my * 3}px)`;
+      } else {
+        el.style.setProperty("--mx", (mx * 3) + "px");
+        el.style.setProperty("--my", (my * 3) + "px");
+      }
     });
     el.addEventListener("mouseleave", () => {
-      el.style.removeProperty("--mx");
-      el.style.removeProperty("--my");
+      if (useDirectTransform) {
+        el.style.transform = "";
+      } else {
+        el.style.removeProperty("--mx");
+        el.style.removeProperty("--my");
+      }
     });
   });
 })();
